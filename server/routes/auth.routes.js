@@ -9,7 +9,7 @@ import {
 } from "../controllers/authcontroller.js";
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
-import verifyjwt from "../controllers/verifyjwt.js";
+import verifyjwt from "../middlewares/verifyjwt.js";
 const router = Router();
 
 router.post(
