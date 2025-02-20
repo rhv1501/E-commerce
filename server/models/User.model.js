@@ -26,15 +26,11 @@ const UserSchema = new schema({
         required: true,
         min: 1,
       },
-      price: {
-        type: Number,
-        required: true,
-      },
     },
   ],
   totalPrice: {
     type: Number,
-    required: true,
+    default: 0,
   },
   createdAt: {
     type: Date,

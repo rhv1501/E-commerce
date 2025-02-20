@@ -22,12 +22,12 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
     const user = await newUser.save();
-    const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECREAT);
+    const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECRET);
     sendotp(req.otp, user.email, res);
-    res.cookie("token", token,{
-      httpOnly:true,
-      sameSite:"None",
-      secure:false
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: false,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -69,12 +69,24 @@ export const login = async (req, res) => {
       res.status(400).json({ message: "Bad Credentials" });
       return;
     }
+    console.log(process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { user_id: userExsists._id },
+      process.env.JWT_SECRET
+    );
+    console.log(token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: false,
+    });
     res.status(200).json({ message: "Login successful" });
   });
 };
 export const resetPassword = async (req, res) => {
-  const { email, oldPassword, newPassword } = req.body;
-  const user = await Usermodel.findOne({ email: email });
+  const { oldPassword, newPassword } = req.body;
+  const _id = req.user.user_id;
+  const user = await Usermodel.findOne({_id});
   if (!user) {
     res.status(400).json({ message: "User not found" });
     return;

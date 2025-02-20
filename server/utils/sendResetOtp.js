@@ -10,7 +10,7 @@ const resetPasswordOtp = async (otp, email, res) => {
     from: "rhv4748@gmail.com",
     to: email,
     subject: "OTP for verification",
-    text: `Your OTP is ${otp} (opt expires in 5 minutes)`,
+    text: `Your OTP is ${otp} (otp expires in 5 minutes)`,
   };
   const salt = bcrypt.genSaltSync(10);
   const hashedOtp = bcrypt.hashSync(otp, salt);

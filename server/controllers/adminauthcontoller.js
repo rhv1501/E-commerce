@@ -1,4 +1,4 @@
-import adminModel from "../models/adminauth.js";
+import adminModel from "../models/admin.model.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
@@ -41,4 +41,4 @@ const resetpassword = async (req, res) => {
     res.status(400).json({ message: "Old password is incorrect" });
   }
 };
-export default { login, resetpassword };
+export { login, resetpassword };
