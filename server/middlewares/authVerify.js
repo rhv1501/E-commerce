@@ -7,6 +7,7 @@ const authVerify = async (req, res, next) => {
       res.status(400).json({ message: "User not verified" });
       return;
     }
+    req.verifieduser = user;
     next();
   }
   if (!user || email === null) {
@@ -20,6 +21,7 @@ const authVerify = async (req, res, next) => {
       res.status(400).json({ message: "User not verified" });
       return;
     }
+    req.verifieduser = user;
     next();
   }
 };
