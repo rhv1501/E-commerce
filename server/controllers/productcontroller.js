@@ -9,17 +9,26 @@ const getprodcuts = (req, res) => {
       res.status(500).json("Internal server error " + err);
     });
 };
+const getspecifiedproduct = (req, res) => {
+  const { id } = req.params;
+  ProductModel.findById(id)
+    .then((product) => {
+      res.json(product);
+    })
+    .catch((err) => {
+      res.status(500).json("Internal server error " + err);
+    });
+};
 
 const addToCart = async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;
     const product = await ProductModel.findById(id);
-    const _id = req.user._id;
-    const verifiedUser = await Usermodel.findById({ _id });
+    const verifiedUser = req.verifiedUser;
     const result = verifiedUser.cart.push({ productId: product._id, quantity });
     verifiedUser.totalPrice += product.price;
-    const save = await verifiedUser.save();
+    await verifiedUser.save();
     res.status(200).json("Product added to cart successfully");
   } catch (err) {
     res.status(500).json("Internal server error " + err);
@@ -28,8 +37,7 @@ const addToCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const { id } = req.params;
-    const _id = req.user.user._id;
-    const verifiedUser = await Usermodel.findById({ _id });
+    const verifiedUser = req.verifiedUser;
     const result = verifiedUser.cart.pull(id);
     const save = await verifiedUser.save();
     res.status(200).json("Product removed from cart successfully");
@@ -40,12 +48,11 @@ const removeFromCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const _id = req.user._id;
-    const verifiedUser = await Usermodel.findById({ _id });
+    const verifiedUser = req.verifiedUser;
     res.json({ cart: verifiedUser.cart, totalPrice: verifiedUser.totalPrice });
   } catch (err) {
     res.status(500).json("Internal server error " + err);
   }
 };
 
-export { getprodcuts, addToCart, removeFromCart, getCart };
+export { getprodcuts, addToCart, removeFromCart, getCart, getspecifiedproduct };

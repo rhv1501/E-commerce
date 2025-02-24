@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 dotenv.config();
 export const signup = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, gender } = req.body;
     const userExists = await Usermodel.findOne({ email: email });
     if (userExists) {
       res.status(400).json({ message: "User already exists" });
@@ -16,10 +16,27 @@ export const signup = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    const boyprofile = "https://avatar.iran.liara.run/public/boy";
+    const girlprofile = "https://avatar.iran.liara.run/public/girl";
+    const nogender = `https://avatar.iran.liara.run/username?username=${username}`;
+    const profilePicture = "";
+    switch (gender) {
+      case male:
+        profilePicture = boyprofile;
+        break;
+      case female:
+        profilePicture = girlprofile;
+        break;
+      default:
+        profilePicture = nogender;
+        break;
+    }
     const newUser = new Usermodel({
       username,
       email,
       password: hashedPassword,
+      gender,
+      profilePicture,
     });
     const user = await newUser.save();
     const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECRET);
@@ -85,8 +102,8 @@ export const login = async (req, res) => {
 };
 export const resetPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  const _id = req.user.user_id;
-  const user = await Usermodel.findOne({_id});
+  const user = await req.verifieduser;
+  console.log(user);
   if (!user) {
     res.status(400).json({ message: "User not found" });
     return;
