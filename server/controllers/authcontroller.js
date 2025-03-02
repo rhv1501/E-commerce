@@ -100,6 +100,10 @@ export const login = async (req, res) => {
     res.status(200).json({ message: "Login successful" });
   });
 };
+export const logout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logout Successful" });
+};
 export const resetPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const user = await req.verifieduser;

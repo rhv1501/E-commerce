@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import productsRoutes from "./routes/product.routes.js";
 import adminAuth from "./routes/admin.auth.routes.js";
+import adminProduct from "./routes/admin.product.js"
 import dotenv from "dotenv";
 import path from "path";
 import connectTodb from "./lib/Connect.Db.js";
@@ -16,6 +17,7 @@ const __dirname = path.resolve();
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/admin/auth", adminAuth);
+app.use("/admin", adminProduct);
 app.use("/api/order", orderRoutes);
 
 app.listen(5000, () => {

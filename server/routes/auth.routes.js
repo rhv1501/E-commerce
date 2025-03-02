@@ -6,6 +6,7 @@ import {
   verifyotp,
   resetPassword,
   forgotpassword,
+  logout,
 } from "../controllers/authcontroller.js";
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
@@ -36,6 +37,7 @@ router.post(
 
 router.post("/verify", verifyotp);
 router.post("/login", login);
+router.post("/logout",logout)
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);
 router.post("/forgotpassword", verifyjwt, authVerify, genotp, forgotpassword);
 export default router;
