@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import { useRef } from "react";
 import gsap from "gsap";
-
 function App() {
   const cursorref = useRef(null);
   return (
