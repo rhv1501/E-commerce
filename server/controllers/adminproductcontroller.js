@@ -39,6 +39,7 @@ export const addproducts = async (req, res) => {
       name,
       description,
       price,
+      imageuri: req.images,
       category,
       stock,
     });
