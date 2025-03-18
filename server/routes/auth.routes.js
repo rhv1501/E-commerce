@@ -11,6 +11,7 @@ import {
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
 import verifyjwt from "../middlewares/verifyjwt.js";
+import Usermodel from "../models/User.model.js";
 const router = Router();
 
 router.post(
@@ -37,7 +38,16 @@ router.post(
 
 router.post("/verify", verifyotp);
 router.post("/login", login);
-router.post("/logout",logout)
+router.post("/logout", logout);
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);
 router.post("/forgotpassword", verifyjwt, authVerify, genotp, forgotpassword);
+router.get("/", verifyjwt, (req, res) => {
+  Usermodel.findById(req.user.user_id)
+    .then((user) => {
+      res.status(200).json({ user: user });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+});
 export default router;

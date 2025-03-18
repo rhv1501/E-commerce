@@ -7,5 +7,5 @@ import { placeordeerofproduct, placeorderfromcart } from "../controllers/orderco
 router.post("/", verifyjwt, authVerify, placeorderfromcart);
 router.post("/:id",verifyjwt,authVerify,placeordeerofproduct)
 
-router.get("/",verifyjwt,authVerify,)
+// router.get("/",verifyjwt,authVerify,)
 export default router;
