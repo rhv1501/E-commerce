@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import { useRef } from "react";
 import gsap from "gsap";
+import Login from "./pages/Login";
 function App() {
   const cursorref = useRef(null);
   return (
@@ -23,6 +24,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </div>
