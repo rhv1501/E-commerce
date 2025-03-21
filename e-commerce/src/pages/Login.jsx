@@ -1,8 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { UserContext } from "../context/userContext/UserContext";
 import Typed from "typed.js";
 const Login = () => {
   const el = useRef(null);
   const pref = useRef(null);
+  const [formval, setFormval] = useState({
+    email: undefined,
+    password: undefined,
+  });
+  const usercontext = useContext(UserContext);
+  const { dispatch } = usercontext;
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: [
@@ -36,6 +43,10 @@ const Login = () => {
               className="border-white border-2 rounded-lg text-white p-4 w-full"
               name="email"
               placeholder="Enter Your Email"
+              value={formval.email}
+              onChange={(e) =>
+                setFormval({ ...formval, [e.target.name]: e.target.value })
+              }
             />
             <input
               type="password"
@@ -43,6 +54,10 @@ const Login = () => {
               name="password"
               placeholder="Enter Your Password"
               ref={pref}
+              value={formval.password}
+              onChange={(e) =>
+                setFormval({ ...formval, [e.target.name]: e.target.value })
+              }
             />
             {!showp ? (
               <button
@@ -97,7 +112,18 @@ const Login = () => {
                 </svg>
               </button>
             )}
-            <button className="backdrop-blur-3xl text-white w-auto p-4 rounded-lg font-bold">
+            <button
+              className="backdrop-blur-3xl text-white w-auto p-4 rounded-lg font-bold"
+              onClick={() => {
+                dispatch({
+                  type: "Login",
+                  payload: {
+                    email: formval.email,
+                    password: formval.password,
+                  },
+                });
+              }}
+            >
               Login
             </button>
           </div>

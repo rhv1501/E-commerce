@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import productsRoutes from "./routes/product.routes.js";
 import adminAuth from "./routes/admin.auth.routes.js";
@@ -8,8 +9,15 @@ import path from "path";
 import connectTodb from "./lib/Connect.Db.js";
 import cookieParser from "cookie-parser";
 import orderRoutes from "./routes/order.routes.js";
+import { METHODS } from "http";
 const app = express();
 dotenv.config();
+const corsOption = {
+  origin: "*",
+  METHODS: ["GET", "PUT", "POST", "DELETE"],
+  credential: true,
+};
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
