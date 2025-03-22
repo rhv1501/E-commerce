@@ -27,6 +27,7 @@ const Login = () => {
     return () => {
       typed.destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [showp, setShowp] = useState(false);
   return (

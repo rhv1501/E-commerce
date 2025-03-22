@@ -13,11 +13,11 @@ import { METHODS } from "http";
 const app = express();
 dotenv.config();
 const corsOption = {
-  origin: "*",
-  METHODS: ["GET", "PUT", "POST", "DELETE"],
-  credential: true,
+  origin: "http://localhost:5173",
+  methods: ["GET", "PUT", "POST", "DELETE"],
+  credentials: true,
 };
-app.use(cors());
+app.use(cors(corsOption));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-app.listen(6000, () => {
-  console.log("Server is running on port 6000");
+app.listen(5050, () => {
+  console.log("Server is running on port 5050");
   connectTodb();
 });
