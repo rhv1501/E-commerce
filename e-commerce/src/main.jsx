@@ -7,12 +7,12 @@ import { UserContextProvider } from "./context/userContext/UserState.jsx";
 import { BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <UserContextProvider>
-        <UIContextProvider>
-          <App />
-        </UIContextProvider>
-      </UserContextProvider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <UserContextProvider>
+          <UIContextProvider>
+            <App />
+          </UIContextProvider>
+        </UserContextProvider>
+      </BrowserRouter>
   </StrictMode>
 );

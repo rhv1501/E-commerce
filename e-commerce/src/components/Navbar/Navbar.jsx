@@ -1,10 +1,14 @@
 import { useState, useContext } from "react";
 import { UIContext } from "../../context/UI Context/UIContext";
+import useLogout from "../../Hooks/useLogout";
 const Navbar = () => {
   const [on, setOn] = useState(false);
   const darkmodeContext = useContext(UIContext);
   const { darkMode, setDarkMode } = darkmodeContext;
-
+  const logout = useLogout();
+  const handlelogout = () => {
+    logout();
+  };
   return (
     <>
       <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-[50%] lg:w-auto">
@@ -18,9 +22,11 @@ const Navbar = () => {
             <li>Products</li>
           </ul>
           <div className="hidden lg:flex gap-4">
-            <button className="bg-[#94bbe9] px-4 py-1 rounded-lg">Login</button>
-            <button className="bg-[#94bbe9] px-4 py-1 rounded-lg text-nowrap">
-              Sign Up
+            <button
+              className="bg-[#94bbe9] px-4 py-1 rounded-lg"
+              onClick={handlelogout}
+            >
+              Logout
             </button>
           </div>
           <button
@@ -38,13 +44,11 @@ const Navbar = () => {
             <li>Contact</li>
             <li>Products</li>
             <li>
-              <button className="bg-[#94bbe9] px-4 py-1 rounded-lg">
-                Login
-              </button>
-            </li>
-            <li>
-              <button className="bg-[#94bbe9] px-4 py-1 rounded-xl text-nowrap">
-                Sign Up
+              <button
+                className="bg-[#94bbe9] px-4 py-1 rounded-lg"
+                onClick={handlelogout}
+              >
+                Logout
               </button>
             </li>
           </ul>

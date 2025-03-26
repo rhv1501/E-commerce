@@ -1,26 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import Hero from "../components/Hero/Hero";
 import Navbar from "../components/Navbar/Navbar";
+import useAuth from "../Hooks/useAuth";
 import { useEffect } from "react";
-import { UserContext } from "../context/userContext/UserContext";
-
 const Home = () => {
   const navigate = useNavigate();
+  const islogged = useAuth();
   useEffect(() => {
-    const checkCookieExists = (cookieName) => {
-      return document.cookie
-        .split(";")
-        .some((item) => item.trim().startsWith(`${cookieName}=`));
-    };
-    if (!checkCookieExists("token")) {
+    if (!islogged) {
       navigate("/login");
     }
-  }, [navigate]);
-  return (
-    <>
-      <Navbar />
-      <Hero />
-    </>
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (islogged) {
+    return (
+      <>
+        <Navbar />
+        <Hero />
+      </>
+    );
+  }
 };
+
 export default Home;
