@@ -9,9 +9,11 @@ export const UserContextProvider = ({ children }) => {
     switch (action.type) {
       case "SetLogin":
         console.log(action.payload);
-        return { ...state, login: action.payload };
+        return { ...state, login: true };
       case "SetLogout":
-        return { ...state, login: action.payload };
+        return { ...state, login: false };
+      case "GetUser":
+        return { ...state, user: action.payload };
       default:
         return state;
     }

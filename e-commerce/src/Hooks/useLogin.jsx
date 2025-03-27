@@ -15,7 +15,7 @@ const useLogin = () => {
       });
       console.log(response);
       if (response.ok) {
-        dispatch({ type: "SetLogin", payload: { login: true } });
+        dispatch({ type: "SetLogin" });
         navigate("/");
       }
     } catch (e) {

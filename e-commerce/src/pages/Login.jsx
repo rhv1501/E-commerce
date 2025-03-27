@@ -17,22 +17,25 @@ const Login = () => {
     if (islogged) {
       navigate("/");
     }
-    const typed = new Typed(el.current, {
-      strings: [
-        "Hey There,",
-        "Ready To Improve Your Packaging Game ?",
-        "Welcome To Pkg IT",
-        "Login/Signup To Get Started",
-      ],
-      typeSpeed: 100,
-      backSpeed: 30,
-      showCursor: false,
-      onComplete: () => {},
-      onStringTyped: () => {},
-    });
-    return () => {
-      typed.destroy();
-    };
+    if (el.current) {
+      const typed = new Typed(el.current, {
+        strings: [
+          "Hey There,",
+          "Ready To Improve Your Packaging Game ?",
+          "Welcome To Pkg IT",
+          "Login/Signup To Get Started",
+        ],
+        typeSpeed: 100,
+        backSpeed: 30,
+        showCursor: false,
+        onComplete: () => {},
+        onStringTyped: () => {},
+      });
+
+      return () => {
+        typed.destroy();
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [showp, setShowp] = useState(false);
@@ -42,7 +45,7 @@ const Login = () => {
         <div className="bg-gradient-to-r from-[#020024] via-[#090979] to-[#00d4ff] w-full h-[100vh] flex items-center justify-center flex-col">
           <p
             ref={el}
-            className="text-white font-bold font-serif fixed top-15 text-lg lg:text-3xl"
+            className="bg-gradient-to-r from-pink-500 via-blue-400 to-purple-400 inline-block text-transparent bg-clip-text font-bold font-serif fixed top-15 text-lg lg:text-3xl"
           />
           <div className="w-[70%] h-[70vh] backdrop-blur-3xl flex items-center justify-center bg-[#00000044] rounded-2xl md:w-[50vh]">
             <div className="flex flex-col items-center gap-4 w-full mx-5 ">
@@ -57,7 +60,7 @@ const Login = () => {
                 }
               />
               <input
-                type="password"
+                type={showp ? "text" : "password"}
                 className="border-white border-2 rounded-lg text-white p-4 w-full"
                 name="password"
                 placeholder="Enter Your Password"
@@ -106,7 +109,7 @@ const Login = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6 text-gray-500"
+                    className="w-6 h-6 text-gray-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

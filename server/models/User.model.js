@@ -22,6 +22,10 @@ const UserSchema = new schema({
     type: String,
     required: true,
   },
+  loggedin: {
+    type: Boolean,
+    default: false,
+  },
   cart: [
     {
       productId: {

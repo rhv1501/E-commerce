@@ -7,6 +7,7 @@ import {
   resetPassword,
   forgotpassword,
   logout,
+  getUser,
 } from "../controllers/authcontroller.js";
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
@@ -35,10 +36,10 @@ router.post(
   genotp,
   signup
 );
-
+router.get("/user", verifyjwt, getUser);
 router.post("/verify", verifyotp);
 router.post("/login", login);
-router.post("/logout", logout);
+router.post("/logout", verifyjwt, logout);
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);
 router.post("/forgotpassword", verifyjwt, authVerify, genotp, forgotpassword);
 router.get("/", verifyjwt, (req, res) => {

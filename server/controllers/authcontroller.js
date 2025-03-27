@@ -19,12 +19,12 @@ export const signup = async (req, res) => {
     const boyprofile = "https://avatar.iran.liara.run/public/boy";
     const girlprofile = "https://avatar.iran.liara.run/public/girl";
     const nogender = `https://avatar.iran.liara.run/username?username=${username}`;
-    const profilePicture = "";
+    let profilePicture = "";
     switch (gender) {
-      case male:
+      case "male":
         profilePicture = boyprofile;
         break;
-      case female:
+      case "female":
         profilePicture = girlprofile;
         break;
       default:
@@ -44,7 +44,7 @@ export const signup = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "None",
-      secure: false,
+      secure: true,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -86,23 +86,33 @@ export const login = async (req, res) => {
       res.status(400).json({ message: "Bad Credentials" });
       return;
     }
-    console.log(process.env.JWT_SECRET);
     const token = jwt.sign(
       { user_id: userExsists._id },
       process.env.JWT_SECRET
     );
-    console.log(token);
+    userExsists.loggedin = true;
+    userExsists.save();
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "None",
-      secure: false,
+      secure: true,
     });
     res.status(200).json({ message: "Login successful" });
   });
 };
 export const logout = async (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logout Successful" });
+  try {
+    const _id = req.user.user_id;
+    console.log(_id);
+    const user = await Usermodel.findOne({ _id });
+    user.loggedin = false;
+    user.save();
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout Successful" });
+  } catch (e) {
+    res.status(500).json({ message: " Error Loging Out" });
+    console.log(e);
+  }
 };
 export const resetPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
@@ -137,6 +147,11 @@ export const resetPassword = async (req, res) => {
     res.status(400).json({ message: "Invalid Old Password" });
     return;
   }
+};
+export const getUser = async (req, res) => {
+  const _id = req.user.user_id;
+  const user = await Usermodel.findOne({ _id });
+  res.status(200).json({ user });
 };
 
 export const forgotpassword = async (req, res) => {
