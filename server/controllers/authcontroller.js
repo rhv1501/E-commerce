@@ -41,11 +41,12 @@ export const signup = async (req, res) => {
     const user = await newUser.save();
     const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECRET);
     sendotp(req.otp, user.email, res);
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "None",
-      secure: true,
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   sameSite: "None",
+    //   secure: true,
+    // });
+    res.status(200).json({ message: "Signup successful", token });
   } catch (error) {
     res.status(500).json({ message: error.message });
     return;
@@ -92,12 +93,12 @@ export const login = async (req, res) => {
     );
     userExsists.loggedin = true;
     userExsists.save();
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "None",
-      secure: true,
-    });
-    res.status(200).json({ message: "Login successful" });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   sameSite: "None",
+    //   secure: true,
+    // });
+    res.status(200).json({ message: "Login successful", token });
   });
 };
 export const logout = async (req, res) => {
@@ -149,8 +150,11 @@ export const resetPassword = async (req, res) => {
   }
 };
 export const getUser = async (req, res) => {
-  const _id = req.user.user_id;
-  const user = await Usermodel.findOne({ _id });
+  const _id = req.user.User_id;
+  const user = await Usermodel.findOne({ _id }).select("-password");
+  if (!user) {
+    res.send(500).json({ message: "user not found" });
+  }
   res.status(200).json({ user });
 };
 

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 const verifyjwt = (req, res, next) => {
-  const token = req.cookies?.token || null;
+  const token = req.header("token");
   if (!token) {
     res.status(401).json({ message: "Unauthorized", error: "No token found" });
     return;

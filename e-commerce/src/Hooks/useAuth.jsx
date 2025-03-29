@@ -1,9 +1,5 @@
-import { useContext } from "react";
-import { UserContext } from "../context/userContext/UserContext";
 const useAuth = () => {
-  const context = useContext(UserContext);
-  const { state } = context || {};
-  if (!state?.login) {
+  if (!localStorage.getItem("token")) {
     return false;
   }
   return true;

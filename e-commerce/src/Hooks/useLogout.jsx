@@ -8,10 +8,14 @@ const useLogout = () => {
   const logout = async () => {
     const response = await fetch("http://localhost:5050/api/auth/logout", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials:"include"
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      credentials: "include",
     });
     if (response.ok) {
+      localStorage.removeItem("token");
       dispatch({ type: "SetLogout" });
       navigate("/login");
     }

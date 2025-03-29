@@ -13,8 +13,9 @@ const useLogin = () => {
         body: JSON.stringify({ email, password }),
         credentials: "include",
       });
-      console.log(response);
+      const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("token", data.token);
         dispatch({ type: "SetLogin" });
         navigate("/");
       }

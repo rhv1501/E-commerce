@@ -4,8 +4,11 @@ import Home from "./pages/Home";
 import { useRef } from "react";
 import gsap from "gsap";
 import Login from "./pages/Login";
+import useGetuser from "./Hooks/useGetuser";
 function App() {
   const cursorref = useRef(null);
+  const getuser = useGetuser();
+  console.log(getuser());
   return (
     <>
       <div
