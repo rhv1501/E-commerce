@@ -150,10 +150,12 @@ export const resetPassword = async (req, res) => {
   }
 };
 export const getUser = async (req, res) => {
-  const _id = req.user.User_id;
+  const _id = req.user.user_id;
+  console.log(_id);
   const user = await Usermodel.findOne({ _id }).select("-password");
   if (!user) {
-    res.send(500).json({ message: "user not found" });
+    res.status(400).json({ message: "user not found" });
+    return;
   }
   res.status(200).json({ user });
 };

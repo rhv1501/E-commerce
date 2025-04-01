@@ -13,6 +13,7 @@ const verifyjwt = (req, res, next) => {
     }
     const result = jwt.verify(token, process.env.JWT_SECRET);
     req.user = result;
+    console.log(result);
     next();
   } catch (error) {
     res

@@ -1,10 +1,6 @@
-import { useContext } from "react";
-import { UserContext } from "../context/userContext/UserContext";
 import { useNavigate } from "react-router-dom";
 const useLogin = () => {
   const navigate = useNavigate();
-  const context = useContext(UserContext);
-  const { dispatch } = context;
   const login = async (email, password) => {
     try {
       const response = await fetch("http://localhost:5050/api/auth/login", {
@@ -16,7 +12,6 @@ const useLogin = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        dispatch({ type: "SetLogin" });
         navigate("/");
       }
     } catch (e) {

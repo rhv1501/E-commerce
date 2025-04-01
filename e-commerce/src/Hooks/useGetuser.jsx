@@ -5,18 +5,17 @@ const useGetuser = () => {
   const context = useContext(UserContext);
   const { dispatch } = context;
   const user = async () => {
-    const response = await fetch("http:localhost/api/auth/user", {
+    const response = await fetch("http://localhost:5050/api/auth/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
       },
-      credentials: "include",
     });
     if (response.ok) {
-      dispatch({ type: "GetUser", payload: response.user });
       const data = await response.json();
-      return data;
+      dispatch({ type: "GetUser", payload: data.user });
+      return data.user;
     }
   };
   return user;

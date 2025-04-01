@@ -2,16 +2,10 @@ import { UserContext } from "./UserContext";
 import { useReducer } from "react";
 export const UserContextProvider = ({ children }) => {
   const initialState = {
-    user: undefined,
-    login: false,
+    user: " ",
   };
   function Userreducer(state, action) {
     switch (action.type) {
-      case "SetLogin":
-        console.log(action.payload);
-        return { ...state, login: true };
-      case "SetLogout":
-        return { ...state, login: false };
       case "GetUser":
         return { ...state, user: action.payload };
       default:
