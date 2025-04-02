@@ -4,6 +4,8 @@ import Typed from "typed.js";
 import useAuth from "../Hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const [Loading, setLoading] = useState(false);
+  const [Error, Seterror] = useState(false);
   const navigate = useNavigate();
   const el = useRef(null);
   const pref = useRef(null);
@@ -51,7 +53,7 @@ const Login = () => {
             <div className="flex flex-col items-center gap-4 w-full mx-5 ">
               <input
                 type="email"
-                className="border-white border-2 rounded-lg text-white p-4 w-full"
+                className="border-white border-2 rounded-lg text-white p-4 w-full outline-none focus:shadow-lg focus:shadow-white transition-shadow"
                 name="email"
                 placeholder="Enter Your Email"
                 value={formval.email}
@@ -61,7 +63,7 @@ const Login = () => {
               />
               <input
                 type={showp ? "text" : "password"}
-                className="border-white border-2 rounded-lg text-white p-4 w-full"
+                className="border-white border-2 rounded-lg text-white p-4 w-full outline-none focus:shadow-lg focus:shadow-white transition-shadow"
                 name="password"
                 placeholder="Enter Your Password"
                 ref={pref}
@@ -74,13 +76,12 @@ const Login = () => {
                 <button
                   onClick={() => {
                     setShowp(!showp);
-                    pref.current.setAttribute("type", "text");
                   }}
-                  className="absolute inset-y-0 right-10 flex items-center text-gray-500 "
+                  className="absolute inset-y-0 right-10 flex items-center text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 text-gray-500"
+                    className="w-6 h-6 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -103,7 +104,6 @@ const Login = () => {
                 <button
                   onClick={() => {
                     setShowp(!showp);
-                    pref.current.setAttribute("type", "password");
                   }}
                   className="absolute inset-y-0 right-10 flex items-center text-gray-500"
                 >
@@ -124,13 +124,34 @@ const Login = () => {
                 </button>
               )}
               <button
-                className="backdrop-blur-3xl text-white w-auto p-4 rounded-lg font-bold"
-                onClick={() => {
-                  log(formval.email, formval.password);
+                className="backdrop-blur-3xl text-white w-auto p-4 rounded-lg font-extrabold border-[#94bbe9] border-1 shadow-md shadow-blue-200 cursor-pointer hover:shadow-2xl transition-shadow"
+                onClick={async () => {
+                  setLoading(true);
+                  const error = await log(formval.email, formval.password);
+                  Seterror(!error);
+                  setLoading(false);
                 }}
               >
-                Login
+                {Loading ? (
+                  <div className="flex flex-row">
+                    <img src="/assets/loginloading.png" className="w-7" />
+                    Loading.......
+                  </div>
+                ) : Error ? (
+                  "Error logging in, refresh to retry"
+                ) : (
+                  "Login"
+                )}
               </button>
+              <p className="fixed bottom-[25%] text-white font-extrabold">
+                Don't have an account yet?{" "}
+                <a
+                  className="border-1 border-white rounded-lg p-1 hover:shadow-2xl hover:shadow-white transition-shadow "
+                  href="/signup"
+                >
+                  SignUp
+                </a>
+              </p>
             </div>
           </div>
         </div>

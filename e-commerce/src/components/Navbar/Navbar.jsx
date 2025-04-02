@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { UIContext } from "../../context/UI Context/UIContext";
 import useLogout from "../../Hooks/useLogout";
+import { UserContext } from "../../context/userContext/UserContext";
 const Navbar = () => {
   const [on, setOn] = useState(false);
   const darkmodeContext = useContext(UIContext);
@@ -9,6 +10,8 @@ const Navbar = () => {
   const handlelogout = () => {
     logout();
   };
+  const context = useContext(UserContext);
+  const { state } = context;
   return (
     <>
       <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-[50%] lg:w-auto">
@@ -86,6 +89,22 @@ const Navbar = () => {
               d="M12 3v1m0 16v1m7.071-7.071h1M3 12h1m2.93-5.657l.707.707m11.314 11.314l.707.707M16.97 5.657l-.707.707M5.657 16.97l.707.707M12 7a5 5 0 1 0 0 10A5 5 0 1 0 12 7z"
             />
           </svg>
+        )}
+      </div>
+      <div className="cursor-pointer fixed left-5 top-5 z-50 rounded-full bg-gray-200 shadow-2xl shadow-[#94bbe9] border-2 border-[#94bbe9] border-dotted">
+        {state.user ? (
+          <img
+            src={state.user.profilePicture}
+            alt="User Profile"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/path/to/fallback-image.jpg";
+            }}
+            loading="lazy"
+            className="w-11"
+          />
+        ) : (
+          "User"
         )}
       </div>
     </>

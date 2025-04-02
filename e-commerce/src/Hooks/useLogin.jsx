@@ -14,8 +14,10 @@ const useLogin = () => {
         localStorage.setItem("token", data.token);
         navigate("/");
       }
+      return true;
     } catch (e) {
       console.error(e);
+      return false;
     }
   };
 
