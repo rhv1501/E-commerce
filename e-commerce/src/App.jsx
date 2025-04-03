@@ -5,6 +5,8 @@ import { useRef } from "react";
 import gsap from "gsap";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Products from "./pages/Products";
+import Contact from "./pages/Contact";
 function App() {
   const cursorref = useRef(null);
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/contact-us" element={<Contact />} />
         </Routes>
       </div>
     </>

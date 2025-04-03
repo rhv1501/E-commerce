@@ -17,12 +17,18 @@ const Navbar = () => {
       <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-[50%] lg:w-auto">
         <div className="bg-transparent w-auto h-auto p-4 flex items-center justify-evenly shadow-2xl shadow-[#94bbe9] rounded-2xl gap-8">
           <div className="flex">
-            <h2 className="font-extrabold text-nowrap text-2xl">PKG IT</h2>
+            <h2 className="font-extrabold text-nowrap text-2xl">
+              <a href="/">PKG IT</a>
+            </h2>
           </div>
           <ul className="hidden lg:flex gap-4">
             <li>About</li>
-            <li>Contact</li>
-            <li>Products</li>
+            <li>
+              <a href="/contact-us">Contact Us</a>
+            </li>
+            <li>
+              <a href="/products">Products</a>
+            </li>
           </ul>
           <div className="hidden lg:flex gap-4">
             <button
@@ -45,7 +51,9 @@ const Navbar = () => {
           <ul className="fixed w-full flex flex-col gap-4 px-5 py-2 bg-tranparent rounded-lg shadow-2xl shadow-[#94bbe9] lg:hidden">
             <li>About</li>
             <li>Contact</li>
-            <li>Products</li>
+            <li>
+              <a href="/products">Products</a>
+            </li>
             <li>
               <button
                 className="bg-[#94bbe9] px-4 py-1 rounded-lg"
