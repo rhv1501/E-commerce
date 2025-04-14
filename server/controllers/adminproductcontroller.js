@@ -30,9 +30,10 @@ export const products = async (req, res) => {
 export const addproducts = async (req, res) => {
   const { name, description, price, category, stock } = req.body;
   try {
-    const user_id = req.user.user_id;
+    const user_id = req.user
+    console.log(user_id);
     if (!user_id) {
-      res.status(200).json({ message: "user un-authorized" });
+      res.status(404).json({ message: "user un-authorized" });
       return;
     }
     const product = new ProductModel({
@@ -46,6 +47,7 @@ export const addproducts = async (req, res) => {
     product.save();
     res.status(200).json({ message: "product added successfully", product });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ messaage: "Internal server error", error: e });
   }
 };

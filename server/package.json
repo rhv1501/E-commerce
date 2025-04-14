@@ -7,9 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "nodemon index.js",
-    "database": "docker start  5921377e3c2d6c3fc333b19564516e70db87af1badca361b467e68d672f9fd46",
+    "database": "docker start  5921377e3c2d",
     "server": "npm run database && npm run backend",
-    "stop": "docker stop 5921377e3c2d6c3fc333b19564516e70db87af1badca361b467e68d672f9fd46"
+    "stop": "docker stop 5921377e3c2d"
   },
   "author": "rhv1501",
   "license": "ISC",

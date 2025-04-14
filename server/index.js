@@ -9,11 +9,10 @@ import path from "path";
 import connectTodb from "./lib/Connect.Db.js";
 import cookieParser from "cookie-parser";
 import orderRoutes from "./routes/order.routes.js";
-import { METHODS } from "http";
 const app = express();
 dotenv.config();
 const corsOption = {
-  origin: "http://localhost:5173",
+  origin: "*",
   methods: ["GET", "PUT", "POST", "DELETE"],
   credentials: true,
 };
