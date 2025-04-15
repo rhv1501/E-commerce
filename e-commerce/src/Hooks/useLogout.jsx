@@ -8,7 +8,6 @@ const useLogout = () => {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
       },
-      credentials: "include",
     });
     if (response.ok) {
       localStorage.removeItem("token");

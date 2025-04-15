@@ -7,17 +7,23 @@ const useLogin = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        credentials: "include",
       });
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
         navigate("/");
+        return { error: false, message: "Login successful" };
       }
-      return true;
+      if (response.status === 400) {
+        return { error: true, message: data.message };
+      }
+      if (response.status === 500) {
+        alert("Server error");
+        return { error: true, message: data.message };
+      }
     } catch (e) {
       console.error(e);
-      return false;
+      return { error: true, message: "An error occurred" };
     }
   };
 
