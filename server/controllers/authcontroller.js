@@ -52,6 +52,17 @@ export const signup = async (req, res) => {
     return;
   }
 };
+export const Sendotp = async (req, res) => {
+  const _id = req.user.user_id;
+  const user =await Usermodel.findById({_id});
+  if (!user) {
+    res.status(400).json({ message: "User not found" });
+    return;
+  }
+  if (user.verified === false) {
+    sendotp(req.otp, user.email, res);
+  }
+};
 export const verifyotp = async (req, res) => {
   const { otp, email } = req.body;
 

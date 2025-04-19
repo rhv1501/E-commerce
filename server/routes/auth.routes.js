@@ -8,6 +8,7 @@ import {
   forgotpassword,
   logout,
   getUser,
+  Sendotp,
 } from "../controllers/authcontroller.js";
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
@@ -37,6 +38,7 @@ router.post(
   signup
 );
 router.get("/user", verifyjwt, getUser);
+router.post("/sendotp", verifyjwt, genotp,Sendotp);
 router.post("/verify", verifyotp);
 router.post("/login", login);
 router.post("/logout", verifyjwt, logout);

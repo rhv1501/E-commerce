@@ -8,6 +8,23 @@ export const UserContextProvider = ({ children }) => {
     switch (action.type) {
       case "GetUser":
         return { ...state, user: action.payload };
+      case "AddToCart":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            cart: [...state.user.cart, action.payload],
+          },
+        };
+      case "RemoveFromCart":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            cart: state.user.cart.filter((item) => item._id !== action.payload),
+          },
+        };
+
       default:
         return state;
     }

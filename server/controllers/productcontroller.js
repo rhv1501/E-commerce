@@ -24,21 +24,35 @@ const addToCart = async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;
-    const product = await ProductModel.findById(id);
-    const verifiedUser = req.verifiedUser;
+    const product = await ProductModel.findById({ _id: id });
+    const verifiedUser = req.verifieduser;
+    console.log(req.verifieduser);
     const result = verifiedUser.cart.push({ productId: product._id, quantity });
-    verifiedUser.totalPrice += product.price;
+    verifiedUser.totalPrice += quantity * product.price;
     await verifiedUser.save();
     res.status(200).json("Product added to cart successfully");
   } catch (err) {
     res.status(500).json("Internal server error " + err);
+    console.log(err);
   }
 };
 const removeFromCart = async (req, res) => {
   try {
     const { id } = req.params;
-    const verifiedUser = req.verifiedUser;
-    const result = verifiedUser.cart.pull(id);
+    const product = await ProductModel.findById({ _id: id });
+    if (!product) {
+      return res.status(404).json("Product not found");
+    }
+    const verifiedUser = req.verifieduser;
+    if(verifiedUser.cart.length === 0){
+      return res.status(404).json("Cart is empty");
+    }
+    const cartItemIndex = await verifiedUser.cart.findIndex(
+      (item) => item.productId.toString() === id
+    );
+    const item = verifiedUser.cart[cartItemIndex];
+    verifiedUser.totalPrice -= item.quantity * product.price;
+    const result = await verifiedUser.cart.pull({ productId: id });
     const save = await verifiedUser.save();
     res.status(200).json("Product removed from cart successfully");
   } catch (err) {
