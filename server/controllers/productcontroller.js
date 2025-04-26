@@ -29,6 +29,7 @@ const addToCart = async (req, res) => {
     console.log(req.verifieduser);
     const result = verifiedUser.cart.push({ productId: product._id, quantity });
     verifiedUser.totalPrice += quantity * product.price;
+    verifiedUser.cartCount += 1;
     await verifiedUser.save();
     res.status(200).json("Product added to cart successfully");
   } catch (err) {
@@ -44,7 +45,7 @@ const removeFromCart = async (req, res) => {
       return res.status(404).json("Product not found");
     }
     const verifiedUser = req.verifieduser;
-    if(verifiedUser.cart.length === 0){
+    if (verifiedUser.cart.length === 0) {
       return res.status(404).json("Cart is empty");
     }
     const cartItemIndex = await verifiedUser.cart.findIndex(
@@ -52,6 +53,13 @@ const removeFromCart = async (req, res) => {
     );
     const item = verifiedUser.cart[cartItemIndex];
     verifiedUser.totalPrice -= item.quantity * product.price;
+    verifiedUser.cartCount -= 1;
+    if (verifiedUser.cartCount < 0) {
+      verifiedUser.cartCount = 0;
+    }
+    if (verifiedUser.totalPrice < 0) {
+      verifiedUser.totalPrice = 0;
+    }
     const result = await verifiedUser.cart.pull({ productId: id });
     const save = await verifiedUser.save();
     res.status(200).json("Product removed from cart successfully");

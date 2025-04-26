@@ -1,14 +1,25 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import useProducts from "../Hooks/useProducts";
 import { ProductContext } from "../context/ProductContext/ProductContext";
+import useGetuser from "../Hooks/useGetuser";
+import useAddTocart from "../Hooks/useAddTocart";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const { fetchProducts, loading, error } = useProducts();
+  const Getuser = useGetuser();
   const context = useContext(ProductContext);
   const { state } = context;
+  const [quantity, setQuantity] = useState(1);
+  const addtocart = useAddTocart();
+  const [cartLoading, setCartLoading] = useState({});
+  const [carterror, SetCarterror] = useState({});
+  const [cartmessage, Setcartmessage] = useState({});
+  const [cartsuccess, setCartsuccess] = useState({});
   useEffect(() => {
     fetchProducts();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -29,88 +40,96 @@ const Products = () => {
                 className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                 key={product._id}
               >
-                <a
+                <Link
                   className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
-                  href="#"
+                  to={`/product/${product._id}`}
                 >
                   <img
                     className="object-cover"
                     src={product.imageuri[0]}
                     alt="product image"
                   />
-                </a>
+                </Link>
                 <div className="mt-4 px-5 pb-5">
-                  <a href="#">
+                  <Link to={`/product/${product._id}`}>
                     <h5 className="text-xl tracking-tight text-slate-900">
                       {product.name}
                     </h5>
-                  </a>
+                  </Link>
                   <div className="mt-2 mb-5 flex items-center justify-between">
                     <p>
                       <span className="text-3xl font-bold text-slate-900">
                         &#8377;{product.price}
                       </span>
                     </p>
-                    <div className="flex items-center">
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5 text-yellow-300"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5 text-yellow-300"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5 text-yellow-300"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5 text-yellow-300"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5 text-yellow-300"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <span className="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">
-                        5.0
+                    <div className="flex items-center justify-center gap-2 font-bold text-slate-900 mr-1 text-lg">
+                      <span>
+                        <button
+                          onClick={() => {
+                            quantity != 1 ? setQuantity(quantity - 1) : null;
+                          }}
+                          className="bg-slate-900 text-white rounded-full px-2 py-1 cursor-pointer"
+                        >
+                          -
+                        </button>
+                      </span>
+                      <span>{quantity}</span>
+                      <span>
+                        <button
+                          onClick={() => {
+                            setQuantity(quantity + 1);
+                          }}
+                          className="bg-slate-900 text-white rounded-full px-2 py-1 cursor-pointer"
+                        >
+                          +
+                        </button>
                       </span>
                     </div>
                   </div>
                   <a
-                    className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                    onClick={() => {
-                      console.log("hello");
+                    className={`flex items-center justify-center rounded-md ${
+                      cartsuccess[product._id]
+                        ? "bg-green-500 hover:bg-green-600"
+                        : "bg-slate-900 hover:bg-gray-700"
+                    }transition-colors duration-300 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer`}
+                    onClick={async () => {
+                      setCartLoading((prev) => ({
+                        ...prev,
+                        [product._id]: true,
+                      }));
+                      const res = await addtocart(product._id, quantity);
+                      setCartLoading((prev) => ({
+                        ...prev,
+                        [product._id]: false,
+                      }));
+                      SetCarterror((prev) => ({
+                        ...prev,
+                        [product._id]: res.error,
+                      }));
+                      Setcartmessage((prev) => ({
+                        ...prev,
+                        [product._id]: res.message,
+                      }));
+                      if (!res.error) {
+                        setCartsuccess((prev) => ({
+                          ...prev,
+                          [product._id]: true,
+                        }));
+                        setTimeout(() => {
+                          Setcartmessage("");
+                          setCartsuccess((prev) => ({
+                            ...prev,
+                            [product._id]: false,
+                          }));
+                        }, 3000);
+                      }
                     }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="mr-2 h-6 w-6"
+                      className={`mr-2 h-6 w-6 ${
+                        cartsuccess[product._id] ? "hidden" : null
+                      }`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -122,7 +141,36 @@ const Products = () => {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    Add to cart
+                    {cartLoading[product._id] ? (
+                      <div className="flex flex-row items-center gap-2">
+                        <img
+                          src="/assets/loginloading.png"
+                          className="w-7 animate-spin"
+                        />
+                        Loading...
+                      </div>
+                    ) : carterror[product._id] ? (
+                      cartmessage
+                    ) : cartsuccess[product._id] ? (
+                      <div className="flex items-center gap-2">
+                        <svg
+                          className="w-5 h-5 text-white animate-bounce"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        Added to Cart!
+                      </div>
+                    ) : (
+                      "Add To Cart"
+                    )}
                   </a>
                 </div>
               </div>

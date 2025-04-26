@@ -127,7 +127,9 @@ const Login = () => {
                 const res = await log(formval.email, formval.password);
                 Seterror(res.error);
                 setMsg(res.message);
-                setLoading(false);
+                setTimeout(() => {
+                  setLoading(false);
+                }, 4000);
               }}
             >
               {Loading ? (

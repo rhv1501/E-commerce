@@ -11,7 +11,10 @@ const useLogin = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+
         return { error: false, message: "Login successful" };
       }
       if (response.status === 400) {
@@ -23,7 +26,7 @@ const useLogin = () => {
       }
     } catch (e) {
       console.error(e);
-      return { error: true, message: "An error occurred" };
+      return { error: true, message: "Server error" };
     }
   };
 

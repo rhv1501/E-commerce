@@ -4,7 +4,7 @@ const authVerify = async (req, res, next) => {
   const user = await Usermodel.findOne({ email: email });
   if (user) {
     if (user.verified === false) {
-      res.status(400).json({ message: "User not verified" });
+      res.status(401).json({ message: "User not verified" });
       return;
     }
     req.verifieduser = user;

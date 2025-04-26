@@ -26,6 +26,10 @@ const UserSchema = new schema({
     type: Boolean,
     default: false,
   },
+  cartCount: {
+    type: Number,
+    default: 0,
+  },
   cart: [
     {
       productId: {

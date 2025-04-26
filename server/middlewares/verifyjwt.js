@@ -17,7 +17,7 @@ const verifyjwt = (req, res, next) => {
     next();
   } catch (error) {
     res
-      .status(400)
+      .status(500)
       .json({ message: "Internal Server Error", error: error.message });
     return;
   }
