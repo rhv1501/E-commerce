@@ -27,11 +27,25 @@ const addToCart = async (req, res) => {
     const product = await ProductModel.findById({ _id: id });
     const verifiedUser = req.verifieduser;
     console.log(req.verifieduser);
-    const result = verifiedUser.cart.push({ productId: product._id, quantity });
+    const value = quantity * product.price;
+    const result = verifiedUser.cart.push({
+      productId: product._id,
+      quantity,
+      value,
+    });
     verifiedUser.totalPrice += quantity * product.price;
     verifiedUser.cartCount += 1;
     await verifiedUser.save();
-    res.status(200).json("Product added to cart successfully");
+    const updatedCart = await Usermodel.findById(verifiedUser._id)
+      .select("cart totalPrice cartCount")
+      .populate("cart.productId");
+
+    res.status(200).json({
+      message: "Cart updated successfully",
+      cart: updatedCart.cart,
+      totalPrice: updatedCart.totalPrice,
+      cartCount: updatedCart.cartCount,
+    });
   } catch (err) {
     res.status(500).json("Internal server error " + err);
     console.log(err);
@@ -39,29 +53,35 @@ const addToCart = async (req, res) => {
 };
 const removeFromCart = async (req, res) => {
   try {
-    const { id } = req.params;
-    const product = await ProductModel.findById({ _id: id });
-    if (!product) {
-      return res.status(404).json("Product not found");
-    }
+    const { id } = req.params; // cart item's _id
     const verifiedUser = req.verifieduser;
+
     if (verifiedUser.cart.length === 0) {
       return res.status(404).json("Cart is empty");
     }
-    const cartItemIndex = await verifiedUser.cart.findIndex(
-      (item) => item.productId.toString() === id
+
+    const cartItemIndex = verifiedUser.cart.findIndex(
+      (item) => item._id.toString() === id
     );
+
+    if (cartItemIndex === -1) {
+      return res.status(404).json("Cart item not found");
+    }
+
     const item = verifiedUser.cart[cartItemIndex];
-    verifiedUser.totalPrice -= item.quantity * product.price;
+
+    
+    verifiedUser.totalPrice -= item.value;
     verifiedUser.cartCount -= 1;
-    if (verifiedUser.cartCount < 0) {
-      verifiedUser.cartCount = 0;
-    }
-    if (verifiedUser.totalPrice < 0) {
-      verifiedUser.totalPrice = 0;
-    }
-    const result = await verifiedUser.cart.pull({ productId: id });
-    const save = await verifiedUser.save();
+
+    if (verifiedUser.cartCount < 0) verifiedUser.cartCount = 0;
+    if (verifiedUser.totalPrice < 0) verifiedUser.totalPrice = 0;
+
+    
+    verifiedUser.cart.pull({ _id: id });
+
+    await verifiedUser.save();
+
     res.status(200).json("Product removed from cart successfully");
   } catch (err) {
     res.status(500).json("Internal server error " + err);

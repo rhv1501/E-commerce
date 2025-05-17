@@ -54,7 +54,7 @@ export const signup = async (req, res) => {
 };
 export const Sendotp = async (req, res) => {
   const _id = req.user.user_id;
-  const user =await Usermodel.findById({_id});
+  const user = await Usermodel.findById({ _id });
   if (!user) {
     res.status(400).json({ message: "User not found" });
     return;
@@ -163,7 +163,9 @@ export const resetPassword = async (req, res) => {
 export const getUser = async (req, res) => {
   const _id = req.user.user_id;
   console.log(_id);
-  const user = await Usermodel.findOne({ _id }).select("-password");
+  const user = await Usermodel.findOne({ _id })
+    .select("-password")
+    .populate("cart.productId");
   if (!user) {
     res.status(400).json({ message: "user not found" });
     return;

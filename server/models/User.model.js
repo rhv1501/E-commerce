@@ -34,13 +34,18 @@ const UserSchema = new schema({
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        ref: "ProductModel",
         required: true,
       },
       quantity: {
         type: Number,
         required: true,
         min: 1,
+      },
+      value: {
+        type: Number,
+        required: true,
+        min: 0,
       },
     },
   ],

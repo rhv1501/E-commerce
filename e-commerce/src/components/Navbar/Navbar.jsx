@@ -2,8 +2,10 @@ import { useState, useContext } from "react";
 import { UIContext } from "../../context/UI Context/UIContext";
 import useLogout from "../../Hooks/useLogout";
 import { UserContext } from "../../context/userContext/UserContext";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const [on, setOn] = useState(false);
+  const [usertoggle, setusertoggle] = useState(false);
   const darkmodeContext = useContext(UIContext);
   const { darkMode, setDarkMode } = darkmodeContext;
   const logout = useLogout();
@@ -14,30 +16,22 @@ const Navbar = () => {
   const { state } = context;
   return (
     <>
-      <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-[50%] lg:w-auto">
+      <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-100 w-[50%] lg:w-auto">
         <div className="bg-transparent w-auto h-auto p-4 flex items-center justify-evenly shadow-2xl shadow-[#94bbe9] rounded-2xl gap-8">
           <div className="flex">
             <h2 className="font-extrabold text-nowrap text-2xl">
-              <a href="/">PKG IT</a>
+              <Link to="/">PKG IT</Link>
             </h2>
           </div>
           <ul className="hidden lg:flex gap-4">
             <li>About</li>
             <li>
-              <a href="/contact-us">Contact Us</a>
+              <Link to="/contact-us">Contact Us</Link>
             </li>
             <li>
-              <a href="/products">Products</a>
+              <Link to="/products">Products</Link>
             </li>
           </ul>
-          <div className="hidden lg:flex gap-4">
-            <button
-              className="bg-[#94bbe9] px-4 py-1 rounded-lg"
-              onClick={handlelogout}
-            >
-              Logout
-            </button>
-          </div>
           <button
             onClick={() => {
               setOn(!on);
@@ -52,15 +46,7 @@ const Navbar = () => {
             <li>About</li>
             <li>Contact</li>
             <li>
-              <a href="/products">Products</a>
-            </li>
-            <li>
-              <button
-                className="bg-[#94bbe9] px-4 py-1 rounded-lg"
-                onClick={handlelogout}
-              >
-                Logout
-              </button>
+              <Link to="/products">Products</Link>
             </li>
           </ul>
         )}
@@ -101,18 +87,40 @@ const Navbar = () => {
       </div>
       <div className="cursor-pointer fixed left-5 top-5 z-50 rounded-full bg-gray-200 shadow-2xl shadow-[#94bbe9] border-2 border-[#94bbe9] border-dotted">
         {state.user ? (
-          <img
-            src={state.user.profilePicture}
-            alt="User Profile"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "/path/to/fallback-image.jpg";
-            }}
-            loading="lazy"
-            className="w-11"
-          />
+          <>
+            <img
+              src={state.user.profilePicture}
+              alt="User Profile"
+              onClick={() => {
+                setusertoggle(!usertoggle);
+              }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/path/to/fallback-image.jpg";
+              }}
+              loading="lazy"
+              className="w-11"
+            />
+          </>
         ) : (
           "User"
+        )}
+        {usertoggle && (
+          <div className="absolute w-auto h-auto p-4 bg-transparent shadow-2xl shadow-[#94bbe9] rounded-2xl mt-1">
+            <ul>
+              <li className="hover:text-[#94bbe9]">
+                <Link to={"/cart"}>Cart</Link>
+              </li>
+              <li>
+                <button
+                  className="hover:text-[#94bbe9] cursor-pointer"
+                  onClick={handlelogout}
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
         )}
       </div>
     </>

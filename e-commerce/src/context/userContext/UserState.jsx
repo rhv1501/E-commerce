@@ -13,7 +13,9 @@ export const UserContextProvider = ({ children }) => {
           ...state,
           user: {
             ...state.user,
-            cart: [...state.user.cart, action.payload],
+            cart: action.payload.cart,
+            totalPrice: action.payload.totalPrice,
+            cartCount: action.payload.cartCount,
           },
         };
       case "RemoveFromCart":
@@ -21,7 +23,9 @@ export const UserContextProvider = ({ children }) => {
           ...state,
           user: {
             ...state.user,
-            cart: state.user.cart.filter((item) => item._id !== action.payload),
+            cart: action.payload.cart,
+            totalPrice: action.payload.totalPrice,
+            cartCount: action.payload.cartCount,
           },
         };
 

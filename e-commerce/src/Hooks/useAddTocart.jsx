@@ -18,7 +18,7 @@ const useAddTocart = () => {
     );
     const data = await res.json();
     if (res.ok) {
-      dispatch({ type: "AddToCart", payload: product_id });
+      dispatch({ type: "AddToCart", payload: data });
       return { error: false, message: data.message };
     }
     if (res.status === 401) {

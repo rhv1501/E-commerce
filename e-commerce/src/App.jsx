@@ -10,6 +10,7 @@ import Contact from "./pages/Contact";
 import useGetuser from "./Hooks/useGetuser";
 import useAuth from "./Hooks/useAuth";
 import Product from "./pages/Product";
+import Cart from "./pages/Cart"
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -42,6 +43,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/product/:id" element={<Product />}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
         </Routes>
       </div>
     </>
