@@ -4,14 +4,16 @@ import useProducts from "../Hooks/useProducts";
 import { ProductContext } from "../context/ProductContext/ProductContext";
 import useGetuser from "../Hooks/useGetuser";
 import useAddTocart from "../Hooks/useAddTocart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext/AuthContext";
 
 const Products = () => {
+  const { islogged } = useContext(AuthContext);
   const { fetchProducts, loading, error } = useProducts();
   const Getuser = useGetuser();
   const context = useContext(ProductContext);
   const { state } = context;
-
+  const navigate = useNavigate();
   const [quantities, setQuantities] = useState({});
   const addtocart = useAddTocart();
   const [cartLoading, setCartLoading] = useState({});
@@ -98,44 +100,89 @@ const Products = () => {
                   </div>
 
                   <button
-                    className={`flex items-center justify-center rounded-md ${
-                      cartsuccess[product._id]
-                        ? "bg-green-500 hover:bg-green-600"
-                        : "bg-slate-900 hover:bg-gray-700"
-                    } transition-colors duration-300 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300`}
+                    className={`flex items-center justify-center rounded-md transition-colors duration-300 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4
+                      ${
+                        cartsuccess[product._id]
+                          ? "bg-green-500 hover:bg-green-600 focus:ring-green-300"
+                          : carterror[product._id]
+                          ? "bg-red-500 hover:bg-red-600 focus:ring-red-300"
+                          : "bg-slate-900 hover:bg-gray-700 focus:ring-blue-300"
+                      }`}
                     onClick={async () => {
-                      setCartLoading((prev) => ({
-                        ...prev,
-                        [product._id]: true,
-                      }));
-                      const res = await addtocart(
-                        product._id,
-                        quantities[product._id] || 1
-                      );
-                      setCartLoading((prev) => ({
-                        ...prev,
-                        [product._id]: false,
-                      }));
-                      SetCarterror((prev) => ({
-                        ...prev,
-                        [product._id]: res.error,
-                      }));
-                      Setcartmessage((prev) => ({
-                        ...prev,
-                        [product._id]: res.message,
-                      }));
-                      if (!res.error) {
-                        setCartsuccess((prev) => ({
+                      if (islogged) {
+                        setCartLoading((prev) => ({
                           ...prev,
                           [product._id]: true,
                         }));
-                        setTimeout(() => {
-                          Setcartmessage({});
+
+                        const res = await addtocart(
+                          product._id,
+                          quantities[product._id] || 1
+                        );
+
+                        setCartLoading((prev) => ({
+                          ...prev,
+                          [product._id]: false,
+                        }));
+
+                        SetCarterror((prev) => ({
+                          ...prev,
+                          [product._id]: res.error,
+                        }));
+
+                        Setcartmessage((prev) => ({
+                          ...prev,
+                          [product._id]: res.message,
+                        }));
+
+                        if (!res.error) {
                           setCartsuccess((prev) => ({
+                            ...prev,
+                            [product._id]: true,
+                          }));
+
+                          setTimeout(() => {
+                            setCartsuccess((prev) => ({
+                              ...prev,
+                              [product._id]: false,
+                            }));
+                            Setcartmessage((prev) => ({
+                              ...prev,
+                              [product._id]: "",
+                            }));
+                          }, 3000);
+                        } else {
+                          setTimeout(() => {
+                            SetCarterror((prev) => ({
+                              ...prev,
+                              [product._id]: false,
+                            }));
+                            Setcartmessage((prev) => ({
+                              ...prev,
+                              [product._id]: "",
+                            }));
+                          }, 5000);
+                        }
+                      } else {
+                        SetCarterror((prev) => ({
+                          ...prev,
+                          [product._id]: true,
+                        }));
+                        Setcartmessage((prev) => ({
+                          ...prev,
+                          [product._id]: "Login required",
+                        }));
+                        setTimeout(() => {
+                          SetCarterror((prev) => ({
                             ...prev,
                             [product._id]: false,
                           }));
-                        }, 3000);
+                          Setcartmessage((prev) => ({
+                            ...prev,
+                            [product._id]: "",
+                          }));
+                          navigate("/auth");
+                        }, 5000);
                       }
                     }}
                   >

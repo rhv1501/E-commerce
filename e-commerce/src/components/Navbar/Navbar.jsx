@@ -2,15 +2,23 @@ import { useState, useContext } from "react";
 import { UIContext } from "../../context/UI Context/UIContext";
 import useLogout from "../../Hooks/useLogout";
 import { UserContext } from "../../context/userContext/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext/AuthContext";
+import Auth from "../../pages/Auth";
+
 const Navbar = () => {
+  const { islogged } = useContext(AuthContext);
   const [on, setOn] = useState(false);
   const [usertoggle, setusertoggle] = useState(false);
   const darkmodeContext = useContext(UIContext);
   const { darkMode, setDarkMode } = darkmodeContext;
+  const navigate = useNavigate();
   const logout = useLogout();
   const handlelogout = () => {
     logout();
+  };
+  const handlelogin = () => {
+    navigate("/auth");
   };
   const context = useContext(UserContext);
   const { state } = context;
@@ -89,7 +97,11 @@ const Navbar = () => {
         {state.user ? (
           <>
             <img
-              src={state.user.profilePicture}
+              src={
+                state.user.profilePicture
+                  ? state.user.profilePicture
+                  : "https://avatar.iran.liara.run/public/job/farmer/male"
+              }
               alt="User Profile"
               onClick={() => {
                 setusertoggle(!usertoggle);
@@ -111,14 +123,26 @@ const Navbar = () => {
               <li className="hover:text-[#94bbe9]">
                 <Link to={"/cart"}>Cart</Link>
               </li>
-              <li>
-                <button
-                  className="hover:text-[#94bbe9] cursor-pointer"
-                  onClick={handlelogout}
-                >
-                  Logout
-                </button>
-              </li>
+              {islogged && (
+                <li>
+                  <button
+                    className="hover:text-[#94bbe9] cursor-pointer"
+                    onClick={handlelogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              )}
+              {!islogged && (
+                <li>
+                  <button
+                    className="hover:text-[#94bbe9] cursor-pointer"
+                    onClick={handlelogin}
+                  >
+                    Login
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         )}

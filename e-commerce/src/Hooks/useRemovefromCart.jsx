@@ -27,15 +27,7 @@ const useRemovefromCart = () => {
         }
       );
 
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        data = {};
-      }
-
-      console.log("Response data:", data);
-
+      const data = await response.json();
       if (!response.ok) {
         const errorMsg =
           data.message ||

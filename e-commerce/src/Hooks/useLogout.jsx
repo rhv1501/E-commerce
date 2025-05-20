@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext/AuthContext";
+
 const useLogout = () => {
-  const navigate = useNavigate();
+  const { setislogged } = useContext(AuthContext);
   const logout = async () => {
     const response = await fetch("http://localhost:5050/api/auth/logout", {
       method: "POST",
@@ -11,7 +13,8 @@ const useLogout = () => {
     });
     if (response.ok) {
       localStorage.removeItem("token");
-      navigate("/login");
+      setislogged(false);
+      return { error: false, message: "Logout successful" };
     }
   };
   return logout;

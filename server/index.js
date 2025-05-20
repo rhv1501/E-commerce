@@ -37,7 +37,7 @@ app.get("/public/uploads/:productname/:imagename", (req, res) => {
   );
 });
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.json({ message: "Server is running" });
 });
 
 app.listen(5050, () => {

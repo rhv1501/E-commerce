@@ -40,7 +40,6 @@ export const signup = async (req, res) => {
     });
     const user = await newUser.save();
     const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECRET);
-    sendotp(req.otp, user.email, res);
     // res.cookie("token", token, {
     //   httpOnly: true,
     //   sameSite: "None",
@@ -54,7 +53,8 @@ export const signup = async (req, res) => {
 };
 export const Sendotp = async (req, res) => {
   const _id = req.user.user_id;
-  const user = await Usermodel.findById({ _id });
+  console.log("from otp", _id);
+  const user = await Usermodel.findOne({ _id });
   if (!user) {
     res.status(400).json({ message: "User not found" });
     return;
@@ -62,11 +62,16 @@ export const Sendotp = async (req, res) => {
   if (user.verified === false) {
     sendotp(req.otp, user.email, res);
   }
+  if (user.verified) {
+    res.status(200).json({ message: "user already verified" });
+  }
 };
 export const verifyotp = async (req, res) => {
-  const { otp, email } = req.body;
+  const { otp } = req.body;
+  const _id = req.user.user_id;
+  console.log(_id);
 
-  const user = await Usermodel.findOne({ email: email });
+  const user = await Usermodel.findOne({ _id });
   const isMatch = bcrypt.compareSync(otp, user.otp);
   if (
     user &&
@@ -81,6 +86,8 @@ export const verifyotp = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: "User verified successfully" });
+  } else if (user.verified) {
+    res.status(200).json({ message: "user already verified" });
   } else {
     res.status(400).json({ message: "Invalid OTP" });
   }

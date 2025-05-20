@@ -1,20 +1,19 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext/AuthContext";
-
-const useLogin = () => {
-  const { setislogged } = useContext(AuthContext);
-  const login = async (email, password) => {
+const useSignup = () => {
+  const signup = async (email, password, username, gender) => {
     try {
-      const response = await fetch("http://localhost:5050/api/auth/login", {
+      const response = await fetch("http://localhost:5050/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, username, gender }),
       });
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        setislogged(true);
-        return { error: false, message: "Login successful" };
+        return {
+          error: false,
+          message:
+            "Signup successful and otp disptached succesfully for verification",
+        };
       }
       if (response.status === 400) {
         return { error: true, message: data.message };
@@ -28,8 +27,6 @@ const useLogin = () => {
       return { error: true, message: "Server error" };
     }
   };
-
-  return login;
+  return signup;
 };
-
-export default useLogin;
+export default useSignup;

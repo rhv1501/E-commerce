@@ -38,8 +38,8 @@ router.post(
   signup
 );
 router.get("/user", verifyjwt, getUser);
-router.post("/sendotp", verifyjwt, genotp,Sendotp);
-router.post("/verify", verifyotp);
+router.post("/sendotp", verifyjwt, genotp, Sendotp);
+router.post("/verify", verifyjwt, verifyotp);
 router.post("/login", login);
 router.post("/logout", verifyjwt, logout);
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);

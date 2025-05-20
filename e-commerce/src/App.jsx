@@ -1,26 +1,33 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import gsap from "gsap";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Auth from "./pages/Auth";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
 import useGetuser from "./Hooks/useGetuser";
-import useAuth from "./Hooks/useAuth";
 import Product from "./pages/Product";
-import Cart from "./pages/Cart"
+import Cart from "./pages/Cart";
+import checkServerHealth from "./utils/Serverhealth";
+import { AuthContext } from "./context/AuthContext/AuthContext";
+import OTPForm from "./pages/otpForm";
+import PrivateRoute from "./components/PrivteRoute";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
-  const islogged = useAuth();
+  const authcontext = useContext(AuthContext);
+  const { islogged } = authcontext;
+  useEffect(() => {
+    checkServerHealth();
+  }, []);
   useEffect(() => {
     if (islogged) {
       getUser();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [islogged]);
+
   return (
     <>
       <div
@@ -38,12 +45,14 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact-us" element={<Contact />} />
-          <Route path="/product/:id" element={<Product />}></Route>
-          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/verify" element={<OTPForm />}></Route>
+          </Route>
         </Routes>
       </div>
     </>
