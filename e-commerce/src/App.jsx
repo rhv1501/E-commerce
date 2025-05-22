@@ -13,6 +13,7 @@ import checkServerHealth from "./utils/Serverhealth";
 import { AuthContext } from "./context/AuthContext/AuthContext";
 import OTPForm from "./pages/otpForm";
 import PrivateRoute from "./components/PrivteRoute";
+import Profile from "./pages/Profile";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -50,8 +51,9 @@ function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/auth" element={<Auth />} />
           <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/verify" element={<OTPForm />}></Route>
+            <Route path="/verify" element={<OTPForm />} />
           </Route>
         </Routes>
       </div>

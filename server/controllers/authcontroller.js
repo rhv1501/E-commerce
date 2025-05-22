@@ -53,7 +53,7 @@ export const signup = async (req, res) => {
 };
 export const Sendotp = async (req, res) => {
   const _id = req.user.user_id;
-  console.log("from otp", _id);
+  // console.log("from otp", _id);
   const user = await Usermodel.findOne({ _id });
   if (!user) {
     res.status(400).json({ message: "User not found" });

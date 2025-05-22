@@ -63,8 +63,13 @@ const UserSchema = new schema({
   expiresOn: {
     type: Date,
   },
-  resetotp: String,
-  resetexpiresOn: Date,
+  resetotp: { type: String },
+  resetexpiresOn: { type: Date },
+  resetverified: {
+    type: Boolean,
+    default: false,
+  },
+  
   verified: {
     type: Boolean,
     default: false,

@@ -61,6 +61,7 @@ const OTPForm = () => {
     if (isInputFilled && otpTouched && !verifyLoading) {
       handleSubmit();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInputFilled]);
 
   useEffect(() => {

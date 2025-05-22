@@ -44,13 +44,13 @@ router.post("/login", login);
 router.post("/logout", verifyjwt, logout);
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);
 router.post("/forgotpassword", verifyjwt, authVerify, genotp, forgotpassword);
-router.get("/", verifyjwt, (req, res) => {
-  Usermodel.findById(req.user.user_id)
-    .then((user) => {
-      res.status(200).json({ user: user });
-    })
-    .catch((err) => {
-      res.status(400).json({ error: err });
-    });
-});
+// router.get("/", verifyjwt, (req, res) => {
+//   Usermodel.findById(req.user.user_id)
+//     .then((user) => {
+//       res.status(200).json({ user: user });
+//     })
+//     .catch((err) => {
+//       res.status(400).json({ error: err });
+//     });
+// });
 export default router;

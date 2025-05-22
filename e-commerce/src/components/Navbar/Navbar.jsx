@@ -100,7 +100,7 @@ const Navbar = () => {
               src={
                 state.user.profilePicture
                   ? state.user.profilePicture
-                  : "https://avatar.iran.liara.run/public/job/farmer/male"
+                  : "/assets/defimageuri.png"
               }
               alt="User Profile"
               onClick={() => {
@@ -108,7 +108,7 @@ const Navbar = () => {
               }}
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = "/path/to/fallback-image.jpg";
+                e.target.src = "/assets/defimageuri.png";
               }}
               loading="lazy"
               className="w-11"
@@ -124,14 +124,24 @@ const Navbar = () => {
                 <Link to={"/cart"}>Cart</Link>
               </li>
               {islogged && (
-                <li>
-                  <button
-                    className="hover:text-[#94bbe9] cursor-pointer"
-                    onClick={handlelogout}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <>
+                  <li>
+                    <Link
+                      to={"/profile"}
+                      className="hover:text-[#94bbe9] cursor-pointer"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="hover:text-[#94bbe9] cursor-pointer"
+                      onClick={handlelogout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
               )}
               {!islogged && (
                 <li>
