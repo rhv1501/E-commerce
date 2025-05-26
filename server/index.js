@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 import authRoutes from "./routes/auth.routes.js";
 import productsRoutes from "./routes/product.routes.js";
 import adminAuth from "./routes/admin.auth.routes.js";
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(path.resolve(), "public")));
+app.use(morgan("dev"));
 const __dirname = path.resolve();
 
 app.use("/api/auth", authRoutes);
