@@ -28,6 +28,14 @@ export const UserContextProvider = ({ children }) => {
             cartCount: action.payload.cartCount,
           },
         };
+      case "verified":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            verified: true,
+          },
+        };
 
       default:
         return state;

@@ -150,8 +150,6 @@ const Auth = () => {
     } else {
       setSignupLoading(false);
       setSignupMsg(res.message);
-      setShowSignup(false);
-      // Optionally reset signup form here
       setSignupVal({
         username: "",
         email: "",
@@ -160,6 +158,7 @@ const Auth = () => {
         gender: "Prefer not to say",
       });
       setTimeout(() => {
+        setShowSignup(false);
         navigate("/verify");
       }, 5000);
     }

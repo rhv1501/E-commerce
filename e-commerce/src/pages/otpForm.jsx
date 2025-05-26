@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import verifyotp from "../utils/verifyotp";
 import resendotp from "../utils/resendotp";
-
+import { UserContext } from "../context/userContext/UserContext";
 const OTPForm = () => {
+  const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
@@ -13,9 +14,10 @@ const OTPForm = () => {
   const [verifyStatus, setVerifyStatus] = useState("");
   const [resendMessage, setResendMessage] = useState("");
   const [resendStatus, setResendStatus] = useState("");
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(0);
   const [isInputFilled, setIsInputFilled] = useState(false);
   const [otpTouched, setOtpTouched] = useState(false);
+  const [otpSent, setOtpSent] = useState(false); // Track if OTP has been sent at least once
 
   const handleChange = (value, index) => {
     const newOtp = [...otp];
@@ -34,24 +36,7 @@ const OTPForm = () => {
     }
   };
 
-  useEffect(() => {
-    const sendInitialOtp = async () => {
-      const { success, message } = await resendotp();
-      if (!success) {
-        setVerifyStatus("error");
-        setVerifyMessage(message);
-      }
-      if (message === "user already verified") {
-        setVerifyStatus("success");
-        setVerifyMessage("User already verified");
-        setTimeout(() => {
-          navigate("/");
-        }, 5000);
-      }
-      if (success) setCountdown(60);
-    };
-    sendInitialOtp();
-  }, [navigate]);
+  // Remove automatic sending of OTP on mount
 
   useEffect(() => {
     setIsInputFilled(otp.every((digit) => digit.length === 1));
@@ -61,7 +46,7 @@ const OTPForm = () => {
     if (isInputFilled && otpTouched && !verifyLoading) {
       handleSubmit();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInputFilled]);
 
   useEffect(() => {
@@ -86,6 +71,8 @@ const OTPForm = () => {
       if (success) {
         setVerifyStatus("success");
         setVerifyMessage(message || "OTP Verified Successfully!");
+        dispatch({ type: "verified" });
+
         setTimeout(() => navigate("/"), 1500);
       } else if (error) {
         setVerifyStatus("error");
@@ -104,7 +91,9 @@ const OTPForm = () => {
   };
 
   const handleresend = async () => {
-    if (countdown > 0 || resendLoading) return;
+    // If OTP sent before, countdown disables button, else allow sending anytime
+    if ((countdown > 0 && otpSent) || resendLoading) return;
+
     setResendLoading(true);
     setResendStatus("");
     setResendMessage("");
@@ -114,13 +103,17 @@ const OTPForm = () => {
       if (success) {
         setCountdown(60);
         setResendStatus("success");
-        setResendMessage(message || "OTP Resent Successfully!");
+        setResendMessage(
+          message ||
+            (otpSent ? "OTP Resent Successfully!" : "OTP Sent Successfully!")
+        );
         setOtpTouched(false);
         setOtp(["", "", "", ""]);
         inputRefs.current[0]?.focus();
+        setOtpSent(true);
       } else if (error) {
         setResendStatus("error");
-        setResendMessage(message || "Failed to resend OTP");
+        setResendMessage(message || "Failed to send OTP");
       }
     } catch {
       setResendStatus("error");
@@ -156,8 +149,14 @@ const OTPForm = () => {
         className="flex flex-col items-center gap-6 relative"
       >
         <span className="text-2xl md:text-3xl font-bold animate-pulse">
-          Enter OTP
+          Enter OTP{" "}
+          <span className="text-red-800 absolute right-7 top-3">
+            <Link to={"/"} className="font-extrabold">
+              x
+            </Link>
+          </span>
         </span>
+
         <p className="text-sm md:text-base leading-6 text-center">
           We have sent a verification code to your Email Address
         </p>
@@ -252,12 +251,18 @@ const OTPForm = () => {
         <button
           type="button"
           onClick={handleresend}
-          disabled={countdown > 0 || resendLoading}
+          disabled={(countdown > 0 && otpSent) || resendLoading}
           style={{
             fontSize: "1.125rem",
             fontWeight: "700",
-            color: countdown > 0 || resendLoading ? "#9ca3af" : "#818cf8",
-            cursor: countdown > 0 || resendLoading ? "not-allowed" : "pointer",
+            color:
+              (countdown > 0 && otpSent) || resendLoading
+                ? "#9ca3af"
+                : "#818cf8",
+            cursor:
+              (countdown > 0 && otpSent) || resendLoading
+                ? "not-allowed"
+                : "pointer",
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
@@ -267,12 +272,14 @@ const OTPForm = () => {
           {resendLoading ? (
             <>
               <span className="animate-spin rounded-full h-4 w-4 border-2 border-indigo-500 border-t-transparent" />
-              Resending...
+              {otpSent ? "Resending..." : "Sending..."}
             </>
-          ) : countdown > 0 ? (
+          ) : countdown > 0 && otpSent ? (
             `Resend in ${countdown}s`
-          ) : (
+          ) : otpSent ? (
             "Resend Code"
+          ) : (
+            "Send OTP"
           )}
         </button>
       </form>

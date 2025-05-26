@@ -1,6 +1,7 @@
 const useSignup = () => {
-  const signup = async (email, password, username, gender) => {
+  const signup = async (email, password, username, ugender) => {
     try {
+      const gender = ugender.toLowerCase();
       const response = await fetch("http://localhost:5050/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
