@@ -9,6 +9,8 @@ import {
   logout,
   getUser,
   Sendotp,
+  forgotpasswordOtpVerify,
+  changePassword,
 } from "../controllers/authcontroller.js";
 import genotp from "../middlewares/otpgenerator.js";
 import authVerify from "../middlewares/authVerify.js";
@@ -43,7 +45,9 @@ router.post("/verify", verifyjwt, verifyotp);
 router.post("/login", login);
 router.post("/logout", verifyjwt, logout);
 router.post("/resetpassword", verifyjwt, authVerify, resetPassword);
-router.post("/forgotpassword", verifyjwt, authVerify, genotp, forgotpassword);
+router.post("/forgotpassword", genotp, forgotpassword);
+router.post("/forgotpasssword/otp/verify", forgotpasswordOtpVerify);
+router.post("/forgotpassword/change", changePassword);
 // router.get("/", verifyjwt, (req, res) => {
 //   Usermodel.findById(req.user.user_id)
 //     .then((user) => {

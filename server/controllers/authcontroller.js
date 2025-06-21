@@ -184,3 +184,57 @@ export const forgotpassword = async (req, res) => {
   const { email } = req.body;
   resetPasswordOtp(req.otp, email, res);
 };
+export const forgotpasswordOtpVerify = async (req, res) => {
+  const { otp } = req.body;
+  try {
+    const user = await Usermodel.findOne({ email: req.body.email });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+      return;
+    }
+    if (user.resetverified) {
+      res.status(400).json({ message: "OTP already verified" });
+      return;
+    }
+    if (user.resetexpiresOn < new Date()) {
+      res.status(400).json({ message: "OTP expired" });
+      return;
+    }
+    const isMatch = await bcrypt.compare(otp, user.resetotp);
+    if (isMatch) {
+      user.resetverified = true;
+      user.resetotp = null;
+      user.resetexpiresOn = null;
+      await user.save();
+      res.status(200).json({ message: "OTP verified successfully" });
+    } else {
+      res.status(400).json({ message: "Invalid OTP" });
+    }
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const changePassword = async (req, res) => {
+  try {
+    const { newPassword, email } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const user = await Usermodel.findOne({ email: email });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+      return;
+    }
+    if (!user.resetverified) {
+      res.status(400).json({ message: "OTP not verified" });
+      return;
+    }
+    user.password = hashedPassword;
+    user.resetverified = false;
+    await user.save();
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
