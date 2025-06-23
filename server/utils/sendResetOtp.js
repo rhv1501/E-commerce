@@ -16,20 +16,25 @@ const resetPasswordOtp = async (otp, email, res) => {
   const hashedOtp = bcrypt.hashSync(otp, salt);
   const user = await Usermodel.findOne({ email });
   if (user) {
-    user.resetotp = hashedOtp;
-    user.resetexpiresOn = Date.now() + 5 * 60 * 1000;
-    await user.save();
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.status(400).json({ message: "Error sending OTP" });
-        console.log(error);
-        return;
-      } else {
-        console.log(info);
-        res.status(200).json({ message: "OTP sent to email" });
-        return;
-      }
-    });
+    if (!user.resetverified) {
+      user.resetotp = hashedOtp;
+      user.resetexpiresOn = Date.now() + 5 * 60 * 1000;
+      await user.save();
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          res.status(400).json({ message: "Error sending OTP" });
+          console.log(error);
+          return;
+        } else {
+          console.log(info);
+          res.status(200).json({ message: "OTP sent to email" });
+          return;
+        }
+      });
+    } else {
+      res.status(400).json({ message: "user verified already" });
+      return;
+    }
   }
 };
 export default resetPasswordOtp;

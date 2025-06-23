@@ -14,6 +14,8 @@ import { AuthContext } from "./context/AuthContext/AuthContext";
 import OTPForm from "./pages/otpForm";
 import PrivateRoute from "./components/PrivteRoute";
 import Profile from "./pages/Profile";
+import ForgotPasswordotpui from "./pages/ForgotPasswordotp";
+import { ForgotPassword } from "./pages/ForgotPassword";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -50,6 +52,8 @@ function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="forgotpassword" element={<ForgotPasswordotpui />} />
+          <Route path="/changepassword" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />

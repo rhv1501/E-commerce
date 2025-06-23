@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useLogin from "../Hooks/useLogin";
 import Typed from "typed.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSignup from "../Hooks/useSignup";
 
 const Auth = () => {
@@ -231,6 +231,12 @@ const Auth = () => {
                   "Login"
                 )}
               </button>
+              <Link
+                to={"/forgotpassword"}
+                className="mx-auto text-white underline"
+              >
+                Forgot Password?
+              </Link>
               <p className="text-center">
                 Don't have an account?{" "}
                 <button
