@@ -36,6 +36,22 @@ export const UserContextProvider = ({ children }) => {
             verified: true,
           },
         };
+      case "ResetPasswordverified":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            resetverified: true,
+          },
+        };
+      case "revertResetPasswordverified":
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            resetverified: false,
+          },
+        };
 
       default:
         return state;

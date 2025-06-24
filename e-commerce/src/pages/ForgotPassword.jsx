@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext/UserContext";
 
 export function ForgotPassword() {
+  const { dispatch } = useContext(UserContext);
+
   const navigate = useNavigate();
   const [pass, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -39,6 +42,10 @@ export function ForgotPassword() {
           setPassword("");
           localStorage.removeItem("email");
           setMessage(data.message);
+          dispatch({ type: "revertResetPasswordverified" });
+          setTimeout(() => {
+            navigate("/auth");
+          }, 2000);
         } else {
           setMessage(data.message);
           if (data.message === "OTP not verified") {

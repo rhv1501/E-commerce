@@ -32,7 +32,10 @@ const Navbar = () => {
             </h2>
           </div>
           <ul className="hidden lg:flex gap-4">
-            <li>About</li>
+            <li>
+              {" "}
+              <Link to="/about">About</Link>
+            </li>
             <li>
               <Link to="/contact-us">Contact Us</Link>
             </li>

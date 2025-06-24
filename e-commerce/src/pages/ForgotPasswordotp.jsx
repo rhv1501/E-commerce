@@ -74,15 +74,13 @@ const ForgotPasswordotpui = () => {
       if (success) {
         setVerifyStatus("success");
         setVerifyMessage(message || "OTP Verified Successfully!");
-        dispatch({ type: "verified" });
-        navigate("/changepassword");
-
-        setTimeout(() => navigate("/"), 1500);
+        dispatch({ type: "ResetPasswordverified" });
+        setTimeout(() => navigate("/changepassword"), 1500);
       } else if (error) {
         setVerifyStatus("error");
         setVerifyMessage(message || "Invalid OTP");
         if (error.message === "OTP already verified") {
-          dispatch({ type: "verified" });
+          dispatch({ type: "ResetPasswordverified" });
           setTimeout(() => navigate("/changepassword"), 1500);
         }
       }
@@ -108,6 +106,16 @@ const ForgotPasswordotpui = () => {
 
     try {
       const { error, success, message } = await forgotpasswordotp(email);
+      if (message === "user verified already") {
+        console.log("User already verified, redirecting to change password...");
+        setVerifyStatus("error");
+        setVerifyMessage(
+          "User already verified. Redirecting to change password..."
+        );
+        dispatch({ type: "ResetPasswordverified" });
+        setTimeout(() => navigate("/changepassword"), 1500);
+        return;
+      }
       if (success) {
         setCountdown(60);
         setResendStatus("success");
@@ -223,6 +231,15 @@ const ForgotPasswordotpui = () => {
           }}
           className="flex flex-col items-center gap-6 relative"
         >
+          <span className="text-sm font-bold text-gray-300">
+            {`${localStorage.getItem("email")},`}{" "}
+            <button
+              onClick={() => setShowOtpScreen(false)}
+              className="text-indigo-400 hover:opacity-80 hover:scale-105 transition-scale  transition-opacity ease-in-out duration-200"
+            >
+              change email ?
+            </button>
+          </span>
           <span className="text-2xl md:text-3xl font-bold animate-pulse">
             Enter OTP{" "}
             <span className="text-red-800 absolute right-7 top-3">

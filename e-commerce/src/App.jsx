@@ -16,6 +16,7 @@ import PrivateRoute from "./components/PrivteRoute";
 import Profile from "./pages/Profile";
 import ForgotPasswordotpui from "./pages/ForgotPasswordotp";
 import { ForgotPassword } from "./pages/ForgotPassword";
+import About from "./pages/About";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -50,6 +51,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="/about" element={<About />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="forgotpassword" element={<ForgotPasswordotpui />} />
