@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import ForgotPasswordotpui from "./pages/ForgotPasswordotp";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import About from "./pages/About";
+import Footer from "./components/footer/Footer";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -63,6 +64,7 @@ function App() {
           </Route>
         </Routes>
       </div>
+      <Footer />
     </>
   );
 }

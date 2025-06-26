@@ -7,8 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "nodemon index.js",
+    "docker": "docker desktop start",
     "database": "docker start  5921377e3c2d",
-    "server": "npm run database && npm run backend",
+    "server": "npm run docker && npm run database && npm run backend",
     "stop": "docker stop 5921377e3c2d"
   },
   "author": "rhv1501",

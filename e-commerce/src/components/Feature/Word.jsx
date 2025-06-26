@@ -41,9 +41,6 @@ const Word = () => {
           />
         </h1>
       </div>
-      <div className="bg-red-600 h-[100vh] w-full">
-        <h1>hello</h1>
-      </div>
     </>
   );
 };

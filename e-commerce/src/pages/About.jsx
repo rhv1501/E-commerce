@@ -123,7 +123,7 @@ const About = () => {
 
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-6">Join Our Journey</h2>
-            <p className="text-gray-800 max-w-3xl mx-auto mb-10">
+            <p className="text-gray-400 max-w-3xl mx-auto mb-10 font-medium">
               We're always looking for passionate individuals to join our team
               and help us shape the future of e-commerce.
             </p>

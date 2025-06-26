@@ -4,7 +4,6 @@ import useLogout from "../../Hooks/useLogout";
 import { UserContext } from "../../context/userContext/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
-import Auth from "../../pages/Auth";
 
 const Navbar = () => {
   const { islogged } = useContext(AuthContext);
@@ -53,9 +52,13 @@ const Navbar = () => {
           </button>
         </div>
         {on && (
-          <ul className="fixed w-full flex flex-col gap-4 px-5 py-2 bg-tranparent rounded-lg shadow-2xl shadow-[#94bbe9] lg:hidden">
-            <li>About</li>
-            <li>Contact</li>
+          <ul className="fixed w-full flex flex-col gap-4 px-5 py-2 bg-[#94bce9d2] rounded-lg shadow-2xl shadow-[#94bbe9] lg:hidden text-white font-extrabold">
+            <li>
+              <Link to="/about">About </Link>
+            </li>
+            <li>
+              <Link to="/contact-us">Contact Us</Link>
+            </li>
             <li>
               <Link to="/products">Products</Link>
             </li>
