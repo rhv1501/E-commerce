@@ -36,7 +36,6 @@ const Cart = () => {
     await remove(productId);
     setRemovingId(null);
   };
-
   return (
     <>
       <Navbar />
@@ -147,12 +146,13 @@ const Cart = () => {
             </div>
 
             <div className="flex justify-end max-w-4xl mx-auto">
-              <button
+              <Link
                 className="mt-4 px-8 py-3 bg-[#94bbe9] hover:bg-blue-500 text-white font-semibold rounded-full shadow-lg transition focus:outline-none focus:ring-2 focus:ring-blue-400"
                 title="Proceed to checkout"
+                to="/Checkout"
               >
                 Proceed to Checkout
-              </button>
+              </Link>
             </div>
           </div>
         )}

@@ -18,6 +18,7 @@ import ForgotPasswordotpui from "./pages/ForgotPasswordotp";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Footer from "./components/footer/Footer";
+import Cheackoutpage from "./pages/Cheackoutpage";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -58,13 +59,14 @@ function App() {
           <Route path="forgotpassword" element={<ForgotPasswordotpui />} />
           <Route path="/changepassword" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>
+            <Route path={"/Checkout"} element={<Cheackoutpage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/verify" element={<OTPForm />} />
           </Route>
         </Routes>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }

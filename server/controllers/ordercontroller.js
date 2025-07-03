@@ -7,7 +7,7 @@ const placeorderfromcart = async (req, res) => {
     res.status(400).json({ message: "Cart is empty" });
     return;
   }
-  const { shiipingaddress, city, postalcode, country } = req.body;
+  const { address, city, postalcode, country, phone, name, state } = req.body;
   try {
     const order = new Order({
       products: [
@@ -20,10 +20,13 @@ const placeorderfromcart = async (req, res) => {
       ],
       total_price: cart.totalPrice,
       shippingAddress: {
-        shiipingaddress,
+        name,
+        address,
         city,
         postalcode,
         country,
+        phone,
+        state,
       },
       user: user._id,
     });

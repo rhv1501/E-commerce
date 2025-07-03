@@ -23,8 +23,8 @@ const Navbar = () => {
   const { state } = context;
   return (
     <>
-      <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-100 w-[50%] lg:w-auto">
-        <div className="bg-transparent w-auto h-auto p-4 flex items-center justify-evenly shadow-2xl shadow-[#94bbe9] rounded-2xl gap-8">
+      <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-100 w-[50%] lg:w-auto shadow-2xl rounded-2xl shadow-[#94bbe9]">
+        <div className="bg-transparent w-auto h-auto p-4 flex items-center justify-evenly  shadow-[#94bbe9] shadow-inner rounded-2xl gap-8">
           <div className="flex">
             <h2 className="font-extrabold text-nowrap text-2xl">
               <Link to="/">PKG IT</Link>

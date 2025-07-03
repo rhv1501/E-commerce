@@ -37,6 +37,7 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
     shipping: {
+      name: { type: String, required: true },
       address: {
         type: String,
         required: true,
@@ -45,6 +46,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      state: { type: String, required: true },
       postal_code: {
         type: String,
         required: true,
@@ -53,6 +55,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      phone: { type: String, required: true },
     },
     tracking_number: {
       type: String,
