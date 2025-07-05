@@ -1,5 +1,6 @@
 import Order from "../models/order.model.js";
 import ProductModel from "../models/product.model.js";
+import Razorpay from "razorpay";
 const placeorderfromcart = async (req, res) => {
   const user = req.verifieduser;
   const cart = user.cart;
@@ -7,37 +8,61 @@ const placeorderfromcart = async (req, res) => {
     res.status(400).json({ message: "Cart is empty" });
     return;
   }
-  const { address, city, postalcode, country, phone, name, state } = req.body;
+  const { address, city, postal_code, country, phone, name, state } = req.body;
+  console.log(address, city, postal_code, country, phone, name, state);
   try {
+    const products = await cart.map((item) => ({
+      product_id: item.productId,
+      value: item.value,
+      quantity: item.quantity,
+    }));
+    console.log(products);
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY,
+      key_secret: process.env.RAZORPAY_SECRET,
+    });
+    const rzporder = await razorpay.orders.create({
+      amount: user.totalPrice * 100, // Amount in paise
+      currency: "INR",
+      receipt: `order_${Date.now()}`,
+      notes: {
+        user_id: user._id.toString(),
+      },
+    });
+    if (!rzporder) {
+      console.log("Failed to create Razorpay order");
+      return res.status(500).json({ error: "Failed to create order" });
+    }
     const order = new Order({
-      products: [
-        {
-          product_id: cart.product_id,
-          name: cart.name,
-          price: cart.price,
-          quantity: cart.quantity,
-        },
-      ],
-      total_price: cart.totalPrice,
-      shippingAddress: {
+      products,
+      total_price: user.totalPrice,
+      shipping: {
         name,
         address,
         city,
-        postalcode,
+        postal_code,
         country,
         phone,
         state,
       },
-      user: user._id,
+      receipt: rzporder.receipt,
+      razorpayid: rzporder.id,
+      user_id: user._id,
     });
     const result = await order.save();
-    res.staus(200).json({
+    user.cart = [];
+    user.cartCount = 0;
+    user.totalPrice = 0;
+    user.save();
+    res.status(200).json({
       message: "order created succesfully",
       order_id: result._id,
       items: result.products,
       shipping: result.shipping,
+      razorpay: rzporder,
     });
   } catch (e) {
+    console.error(e)
     res.status(500).json({ error: "internal server error", message: e });
   }
 };

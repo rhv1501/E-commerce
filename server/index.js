@@ -10,6 +10,7 @@ import path from "path";
 import connectTodb from "./lib/Connect.Db.js";
 import cookieParser from "cookie-parser";
 import orderRoutes from "./routes/order.routes.js";
+import paymentRoute from "./routes/pay.routes.js";
 const app = express();
 dotenv.config();
 const corsOption = {
@@ -30,6 +31,7 @@ app.use("/api/products", productsRoutes);
 app.use("/admin/auth", adminAuth);
 app.use("/admin", adminProduct);
 app.use("/api/order", orderRoutes);
+app.use("/api/payments", paymentRoute);
 app.get("/public/uploads/:productname/:imagename", (req, res) => {
   res.sendFile(
     path.join(

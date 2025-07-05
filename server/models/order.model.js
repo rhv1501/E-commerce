@@ -8,11 +8,7 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
-        name: {
-          type: String,
-          required: true,
-        },
-        price: {
+        value: {
           type: Number,
           required: true,
         },
@@ -36,6 +32,16 @@ const orderSchema = new mongoose.Schema(
       enum: ["Pending", "Confirmed", "shipped", "Delivered"],
       default: "Pending",
     },
+    payment_status: {
+      type: String,
+      enum: ["Pending", "Paid", "Failed"],
+      default: "Pending",
+    },
+    receipt: {
+      type: String,
+      default: "",
+    },
+    razorpayid: { type: String, default: "" },
     shipping: {
       name: { type: String, required: true },
       address: {

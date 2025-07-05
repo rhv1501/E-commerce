@@ -19,6 +19,8 @@ import { ForgotPassword } from "./pages/ForgotPassword";
 import About from "./pages/About";
 import Footer from "./components/footer/Footer";
 import Cheackoutpage from "./pages/Cheackoutpage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -36,6 +38,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <div
         className="w-50 h-50 rounded-[50%] fixed blur-3xl pointer-events-none bg-gradient-to-r from-[#eeaeca] to-[#94bbe9]"
         ref={cursorref}
