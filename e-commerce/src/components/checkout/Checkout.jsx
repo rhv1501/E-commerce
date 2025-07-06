@@ -3,8 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useOrder } from "../../Hooks/useOrder";
 import { toast } from "react-toastify";
 import { UserContext } from "../../context/userContext/UserContext";
+import { usePayment } from "../../Hooks/usePayment";
 
 const Checkout = () => {
+  const { verifyPayment } = usePayment();
   const { state } = useContext(UserContext);
   const navigate = useNavigate();
   const [formval, setFormval] = useState({
@@ -50,10 +52,13 @@ const Checkout = () => {
         description: "Test Transaction",
         image: "https://example.com/your_logo",
         order_id: orderData.razorpay.id,
-        handler: function (response) {
-          alert(response.razorpay_payment_id);
-          alert(response.razorpay_order_id);
-          alert(response.razorpay_signature);
+        handler: async function (response) {
+          await verifyPayment(
+            response.razorpay_order_id,
+            response.razorpay_payment_id,
+            response.razorpay_signature
+          );
+          toast.success("Payment successful!");
         },
         prefill: {
           name: state.user.username,
