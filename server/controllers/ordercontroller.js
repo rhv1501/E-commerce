@@ -53,7 +53,7 @@ const placeorderfromcart = async (req, res) => {
     user.cart = [];
     user.cartCount = 0;
     user.totalPrice = 0;
-    user.save();
+    await user.save();
     res.status(200).json({
       message: "order created succesfully",
       order_id: result._id,
@@ -62,7 +62,7 @@ const placeorderfromcart = async (req, res) => {
       razorpay: rzporder,
     });
   } catch (e) {
-    console.error(e)
+    console.error(e);
     res.status(500).json({ error: "internal server error", message: e });
   }
 };
@@ -88,10 +88,10 @@ const placeordeerofproduct = async (req, res) => {
         postalcode,
         country,
       },
-      user: user._id,
+      user_id: user._id,
     });
     await order.save();
-    res.staus(200).json({
+    res.status(200).json({
       message: "order created succesfully",
       order_id: result._id,
       items: result.products,
@@ -102,12 +102,17 @@ const placeordeerofproduct = async (req, res) => {
   }
 };
 
-const getorders = (req, res) => {
+const getorders = async (req, res) => {
   try {
     const user = req.verifieduser;
-    const result = Order.find({ user_id: user._id });
+    const result = await Order.find({ user_id: user._id })
+      .populate("products.product_id")
+      .sort({ createdAt: -1 })
+      .lean();
+    console.log(result);
     res.status(200).json({ orders: result });
   } catch (e) {
+    console.error(e);
     res.status(500).json({ message: "internal server error", error: e });
   }
 };

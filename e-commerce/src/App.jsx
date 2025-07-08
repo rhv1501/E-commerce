@@ -21,6 +21,7 @@ import Footer from "./components/footer/Footer";
 import Cheackoutpage from "./pages/Cheackoutpage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Orders from "./pages/Orders";
 function App() {
   const cursorref = useRef(null);
   const getUser = useGetuser();
@@ -62,6 +63,7 @@ function App() {
           <Route path="forgotpassword" element={<ForgotPasswordotpui />} />
           <Route path="/changepassword" element={<ForgotPassword />} />
           <Route element={<PrivateRoute />}>
+            <Route path={"/orders"} element={<Orders />} />
             <Route path={"/Checkout"} element={<Cheackoutpage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />

@@ -59,13 +59,14 @@ const Checkout = () => {
             response.razorpay_signature
           );
           toast.success("Payment successful!");
+          navigate("/orders");
         },
         prefill: {
           name: state.user.username,
           email: state.user.email,
         },
         notes: {
-          address: "Razorpay Corporate Office",
+          details: JSON.stringify(data.data),
         },
         theme: {
           color: "#3399cc",
@@ -81,6 +82,9 @@ const Checkout = () => {
         alert(response.error.reason);
         alert(response.error.metadata.order_id);
         alert(response.error.metadata.payment_id);
+        toast.error("Payment failed. Please try again.");
+        console.error("Payment failed:", response);
+        navigate("/cart");
       });
       rzp1.open();
       e.preventDefault();
