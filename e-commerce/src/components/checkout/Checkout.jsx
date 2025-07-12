@@ -4,8 +4,10 @@ import { useOrder } from "../../Hooks/useOrder";
 import { toast } from "react-toastify";
 import { UserContext } from "../../context/userContext/UserContext";
 import { usePayment } from "../../Hooks/usePayment";
+import { UIContext } from "../../context/UI Context/UIContext";
 
 const Checkout = () => {
+  const { darkMode } = useContext(UIContext);
   const { verifyPayment } = usePayment();
   const { state } = useContext(UserContext);
   const navigate = useNavigate();
@@ -56,7 +58,8 @@ const Checkout = () => {
           await verifyPayment(
             response.razorpay_order_id,
             response.razorpay_payment_id,
-            response.razorpay_signature
+            response.razorpay_signature,
+            state.user._id
           );
           toast.success("Payment successful!");
           navigate("/orders");
@@ -69,7 +72,10 @@ const Checkout = () => {
           details: JSON.stringify(data.data),
         },
         theme: {
-          color: "#3399cc",
+          color: !darkMode ? "#3399cc" : "#bb86fc",
+          backdrop_color: "transparent",
+          image_padding: false,
+          image_frame: true,
         },
       };
       // eslint-disable-next-line no-undef

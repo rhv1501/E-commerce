@@ -50,10 +50,6 @@ const placeorderfromcart = async (req, res) => {
       user_id: user._id,
     });
     const result = await order.save();
-    user.cart = [];
-    user.cartCount = 0;
-    user.totalPrice = 0;
-    await user.save();
     res.status(200).json({
       message: "order created succesfully",
       order_id: result._id,

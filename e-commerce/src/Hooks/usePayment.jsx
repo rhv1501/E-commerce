@@ -2,7 +2,8 @@ export const usePayment = () => {
   const verifyPayment = async (
     razorpay_order_id,
     razorpay_payment_id,
-    razorpay_signature
+    razorpay_signature,
+    userid
   ) => {
     try {
       const response = await fetch(
@@ -11,11 +12,13 @@ export const usePayment = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            token: localStorage.getItem("token"),
           },
           body: JSON.stringify({
             razorpay_order_id,
             razorpay_payment_id,
             razorpay_signature,
+            userid,
           }),
         }
       );

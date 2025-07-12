@@ -15,7 +15,6 @@ export const verifypayment = async (req, res) => {
           payment_status: "Paid",
           status: "Confirmed",
           razorpay_payment_id: razorpay_payment_id,
-
         },
       }
     );
@@ -26,6 +25,11 @@ export const verifypayment = async (req, res) => {
         message: "Failed to update order status",
       });
     }
+    const user = req.verifieduser;
+    user.cart = [];
+    user.cartCount = 0;
+    user.totalPrice = 0;
+    await user.save();
     res.status(200).json({
       success: true,
       error: false,
