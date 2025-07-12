@@ -67,7 +67,10 @@ const Navbar = () => {
       </nav>
       <div
         className="cursor-pointer fixed right-5 top-5 z-50 p-4 rounded-full bg-gray-200 shadow-2xl shadow-[#94bbe9]"
-        onClick={() => setDarkMode(!darkMode)}
+        onClick={() => {
+          setDarkMode(!darkMode);
+          localStorage.setItem("theme", darkMode ? "light" : "dark");
+        }}
       >
         {!darkMode ? (
           <svg

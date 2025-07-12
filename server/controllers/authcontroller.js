@@ -5,6 +5,7 @@ import transporter from "../lib/emailTransporter.js";
 import resetPasswordOtp from "../utils/sendResetOtp.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { blacklistedModel } from "../models/blacklisted.model.js";
 dotenv.config();
 export const signup = async (req, res) => {
   try {
@@ -124,9 +125,22 @@ export const logout = async (req, res) => {
     const _id = req.user.user_id;
     console.log(_id);
     const user = await Usermodel.findOne({ _id });
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+      return;
+    }
+    if (!user.loggedin) {
+      res.status(400).json({ message: "User is not logged in" });
+      return;
+    }
     user.loggedin = false;
-    user.save();
+    await user.save();
     res.clearCookie("token");
+    const token = req.header("token");
+    if (token) {
+      const tmodel = new blacklistedModel({ token });
+      await tmodel.save();
+    }
     res.status(200).json({ message: "Logout Successful" });
   } catch (e) {
     res.status(500).json({ message: " Error Loging Out" });
@@ -154,6 +168,11 @@ export const resetPassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
     user.password = hashedPassword;
     await user.save();
+    const token = req.header("token");
+    if (token) {
+      const tmodel = new blacklistedModel({ token });
+      await tmodel.save();
+    }
     res.status(200).json({ message: "Password updated successfully" });
     transporter.sendMail({
       from: "rhv4748@gmail.com",

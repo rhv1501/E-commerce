@@ -39,6 +39,11 @@ router.post(
   genotp,
   signup
 );
+router.get("/verifyuser", verifyjwt, (req, res) => {
+  res.status(200).json({ message: "User is logged in" });
+});
+router.post("/sendotp", genotp, Sendotp);
+router.post("/verify", verifyotp);
 router.get("/user", verifyjwt, getUser);
 router.post("/sendotp", verifyjwt, genotp, Sendotp);
 router.post("/verify", verifyjwt, verifyotp);

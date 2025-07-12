@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UIContext } from "./UIContext";
 
 export const UIContextProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+      setDarkMode(true);
+    } else if (theme === "light") {
+      setDarkMode(false);
+    } else {
+      setDarkMode(false);
+    }
+  }, []);
 
   const backgroundGradient = darkMode
     ? "linear-gradient(to bottom right, #0f0c29, #302b63, #24243e)"

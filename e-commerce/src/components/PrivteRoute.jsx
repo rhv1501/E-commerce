@@ -1,9 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext/AuthContext";
-
+import { toast } from "react-toastify";
 const PrivateRoute = () => {
   const { islogged, loading } = useContext(AuthContext);
+  useEffect(() => {
+    if (!islogged) {
+      toast.info("You need to log in to access this page.");
+    }
+  }, [islogged]);
 
   if (loading) {
     return (
