@@ -16,7 +16,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     fetchSingleProduct(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const ProductDetails = () => {
               {product.imageuri.map((img, idx) => (
                 <SwiperSlide key={idx}>
                   <img
+                    loading="lazy"
                     src={img}
                     onClick={() => setSelectedImage(img)}
                     className={`w-24 h-24 object-cover rounded-xl cursor-pointer ${
