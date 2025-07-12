@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -8,17 +7,15 @@ import { ProductContextProvider } from "./context/ProductContext/ProductState.js
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext/AuthState.jsx";
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <UserContextProvider>
-          <ProductContextProvider>
-            <UIContextProvider>
-              <App />
-            </UIContextProvider>
-          </ProductContextProvider>
-        </UserContextProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <AuthProvider>
+      <UserContextProvider>
+        <ProductContextProvider>
+          <UIContextProvider>
+            <App />
+          </UIContextProvider>
+        </ProductContextProvider>
+      </UserContextProvider>
+    </AuthProvider>
+  </BrowserRouter>
 );

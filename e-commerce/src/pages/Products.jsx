@@ -51,6 +51,7 @@ const Products = () => {
                     className="object-cover"
                     src={product.imageuri[0]}
                     alt="product image"
+                    loading="lazy"
                   />
                 </Link>
                 <div className="mt-4 px-5 pb-5">

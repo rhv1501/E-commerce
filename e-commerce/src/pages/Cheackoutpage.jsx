@@ -1,6 +1,6 @@
-import Checkout from "../components/checkout/Checkout";
+import { lazy } from "react";
 import Navbar from "../components/Navbar/Navbar";
-
+const Checkout = lazy(() => import("../components/checkout/Checkout"));
 const Cheackoutpage = () => {
   return (
     <>

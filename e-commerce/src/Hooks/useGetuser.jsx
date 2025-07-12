@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { UserContext } from "../context/userContext/UserContext";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 const useGetuser = () => {
   const context = useContext(UserContext);
   const { dispatch } = context;
-  const user = async () => {
+  const user = useCallback(async () => {
     const response = await fetch("http://localhost:5050/api/auth/user", {
       method: "GET",
       headers: {
@@ -25,7 +25,7 @@ const useGetuser = () => {
         return null;
       }
     }
-  };
+  }, [dispatch]);
   return user;
 };
 export default useGetuser;

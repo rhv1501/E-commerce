@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { ProductContext } from "../context/ProductContext/ProductContext";
 
 const useProducts = () => {
@@ -7,7 +7,7 @@ const useProducts = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -29,7 +29,7 @@ const useProducts = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch]);
 
   return { fetchProducts, loading, error };
 };

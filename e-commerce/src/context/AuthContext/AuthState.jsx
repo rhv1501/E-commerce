@@ -1,56 +1,56 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { toast } from "react-toastify";
 
 export const AuthProvider = ({ children }) => {
   const [islogged, setislogged] = useState(false);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:5050/api/auth/verifyuser",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              token: localStorage.getItem("token"),
-            },
-          }
-        );
-        if (!response.ok) {
-          const data = await response.json();
-          if (data.error === "No token found") {
-            toast.error("Please login to continue");
-            setislogged(false);
-            return;
-          }
-          if (data.error === "Token is blacklisted") {
-            toast.error("Session expired, please login again");
-            localStorage.removeItem("token");
-            setislogged(false);
-            return;
-          } else {
-            const data = await response.json();
-            console.log(data.message);
-          }
+  const verifyUser = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5050/api/auth/verifyuser",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.getItem("token"),
+          },
         }
-      } catch (error) {
-        console.error("Error verifying user:", error);
+      );
+      if (!response.ok) {
+        const data = await response.json();
+        if (data.error === "No token found") {
+          toast.error("Please login to continue");
+          setislogged(false);
+          return;
+        }
+        if (data.error === "Token is blacklisted") {
+          toast.error("Session expired, please login again");
+          localStorage.removeItem("token");
+          setislogged(false);
+          return;
+        } else {
+          const data = await response.json();
+          console.log(data.message);
+        }
       }
-    };
-    if (islogged) verifyUser();
-  }, [islogged]);
+    } catch (error) {
+      console.error("Error verifying user:", error);
+    }
+  }, []);
 
   // Initial token check (with optional delay for spinner effect)
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const initauth = async () => {
       const token = localStorage.getItem("token");
+      if (token) {
+        await verifyUser();
+      }
       setislogged(!!token);
       setLoading(false);
-    }, 2000); // Optional: Remove delay in production
-    return () => clearTimeout(timer);
-  }, []);
+    };
+    initauth();
+  }, [verifyUser]);
 
   // Sync across tabs using storage event
   useEffect(() => {
@@ -62,10 +62,16 @@ export const AuthProvider = ({ children }) => {
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
+  const contextValue = useMemo(
+    () => ({
+      islogged,
+      setislogged,
+      loading,
+    }),
+    [islogged, loading]
+  );
 
   return (
-    <AuthContext.Provider value={{ islogged, setislogged, loading }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
