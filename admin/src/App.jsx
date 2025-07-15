@@ -1,12 +1,9 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navigation/Navbar";
 
 const App = () => {
   return (
     <>
-      <div className="h-screen">
-        <Navbar />
-        <h1 className="text-center">Welcome To pkg It</h1>
-      </div>
+      <Navbar />
     </>
   );
 };
