@@ -1,16 +1,14 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-function App() {
+import Navbar from "./components/Navbar";
+
+const App = () => {
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Router>
+      <div className="h-screen">
+        <Navbar />
+        <h1 className="text-center">Welcome To pkg It</h1>
+      </div>
     </>
   );
-}
+};
 
 export default App;
