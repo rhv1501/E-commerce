@@ -3,6 +3,7 @@ import upload from "../middlewares/multerupload.js";
 import {
   addproducts,
   deleteproduct,
+  order,
   orders,
   products,
   updateproduct,
@@ -12,8 +13,9 @@ import preParseForm from "../middlewares/preparser.js";
 const router = Router();
 
 router.get("/orders", verifyjwt, orders);
+router.get("/order/:id", verifyjwt, order);
 router.get("/products", verifyjwt, products);
-router.post("/products", verifyjwt, preParseForm,upload, addproducts);
+router.post("/products", verifyjwt, preParseForm, upload, addproducts);
 router.delete("/products/:id", verifyjwt, deleteproduct);
 router.put("/products/:id", verifyjwt, updateproduct);
 

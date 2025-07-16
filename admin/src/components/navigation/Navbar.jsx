@@ -17,7 +17,7 @@ const Navbar = () => {
   }, []);
   return (
     <>
-      <nav className="z-100 h-10 fixed top-0 left-0 bg-gradient-to-tr from-purple-800 via-indigo-600 to-blue-400 w-full flex items-center font-bold p-10 overflow-x-hidden text-white">
+      <nav className="z-100 h-auto p-5 fixed top-0 left-0 bg-gradient-to-tr from-purple-800 via-indigo-600 to-blue-400 w-full flex items-center font-bold overflow-x-hidden text-white">
         <div onClick={() => setOn(!on)} className="cursor-pointer">
           <FaGripLines
             className={`text-xl ${

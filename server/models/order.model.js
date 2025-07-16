@@ -20,7 +20,7 @@ const orderSchema = new mongoose.Schema(
     ],
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Usermodel",
       required: true,
     },
     total_price: {

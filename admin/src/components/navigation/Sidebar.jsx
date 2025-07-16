@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const Sidebar = ({ on }) => {
   return (
     <div
@@ -15,14 +16,14 @@ const Sidebar = ({ on }) => {
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-1000 ease-in-out`}
           >
-            Dashboard
+            <Link to="/">Dashboard</Link>
           </li>
           <li
             className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-2000 ease-in-out`}
           >
-            Orders
+            <Link to={"/Orders"}>Orders</Link>
           </li>
           <li
             className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
