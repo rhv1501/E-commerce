@@ -21,7 +21,7 @@ export const orders = async (req, res) => {
 export const order = async (req, res) => {
   try {
     const { id } = req.params;
-    const order = await Order.findById(id);
+    const order = await Order.findById(id).populate("products.product_id");
     if (!order) {
       res
         .status(400)
@@ -112,5 +112,42 @@ export const updateproduct = async (req, res) => {
     res.status(200).json({ update: product });
   } catch (e) {
     res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const { shipping_id } = req.body;
+
+  try {
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.status = status;
+    if (status === "Shipped") {
+      if (shipping_id) {
+        order.tracking_number = shipping_id;
+      } else {
+        return res
+          .status(400)
+          .json({ message: "Shipping ID is required for shipped status" });
+      }
+    }
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      error: false,
+      message: "Order status updated successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res
+      .status(500)
+      .json({ success: false, error: true, message: "Internal server error" });
   }
 };

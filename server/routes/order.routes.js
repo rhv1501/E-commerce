@@ -10,6 +10,5 @@ import {
 
 router.post("/", verifyjwt, authVerify, placeorderfromcart);
 router.post("/:id", verifyjwt, authVerify, placeordeerofproduct);
-
 router.get("/", verifyjwt, authVerify, getorders);
 export default router;

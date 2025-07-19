@@ -6,6 +6,7 @@ import {
   order,
   orders,
   products,
+  updateOrderStatus,
   updateproduct,
 } from "../controllers/adminproductcontroller.js";
 import verifyjwt from "../middlewares/verifyjwt.js";
@@ -18,5 +19,8 @@ router.get("/products", verifyjwt, products);
 router.post("/products", verifyjwt, preParseForm, upload, addproducts);
 router.delete("/products/:id", verifyjwt, deleteproduct);
 router.put("/products/:id", verifyjwt, updateproduct);
+
+//order status update route
+router.put("/order/:id", verifyjwt, updateOrderStatus);
 
 export default router;
