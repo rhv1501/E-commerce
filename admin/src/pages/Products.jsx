@@ -6,9 +6,10 @@ import { useProduct } from "../context/product/useProduct";
 const Products = () => {
   const { fetchProducts, loading, error } = useProducts();
   const { products } = useProduct();
-
   useEffect(() => {
-    fetchProducts();
+    if (products === null || products.length === 0) {
+      fetchProducts();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -19,6 +20,7 @@ const Products = () => {
           Products
         </h1>
       </div>
+      <Link to={"/addproduct"}>Add Product</Link>
       <div className="flex justify-center items-center flex-wrap my-40">
         {loading && <p>Loading products...</p>}
         {error && <p>{error}</p>}
