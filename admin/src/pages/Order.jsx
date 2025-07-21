@@ -4,6 +4,7 @@ import useGetorder from "../hooks/useGetorder";
 import { useOrders } from "../context/order/useOrder";
 import Loading from "../components/Loading";
 import useUpdatestatus from "../hooks/useUpdatestatus";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const Order = () => {
   const { orders } = useOrders();
   const [orderData, setOrderData] = useState(null);
   const [status, setStatus] = useState(orderData?.status || "Confirmed");
+  const [trackingNumber, setTrackingNumber] = useState("");
   useEffect(() => {
     const fetchOrder = async () => {
       if (orders && orders.length > 0) {
@@ -35,7 +37,16 @@ const Order = () => {
   const { updatestatus } = useUpdatestatus();
   const handlestatus = async (e, orderId) => {
     e.preventDefault();
-    updatestatus(orderId, status);
+    if (status === "Shipped") {
+      if (!trackingNumber) {
+        toast.error("Please enter a tracking number.");
+        return;
+      }
+      updatestatus(orderId, trackingNumber, status);
+      return;
+    }
+    updatestatus(orderId, null, status);
+    return;
   };
 
   if (loading) {
@@ -120,9 +131,9 @@ const Order = () => {
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
                       orderData.status === "delivered"
                         ? "bg-green-100 text-green-800"
-                        : orderData.status === "shipped"
+                        : orderData.status === "Shipped"
                         ? "bg-blue-100 text-blue-800"
-                        : orderData.status === "confirmed"
+                        : orderData.status === "Confirmed"
                         ? "bg-yellow-100 text-yellow-800"
                         : "bg-gray-100 text-gray-800"
                     }`}
@@ -212,7 +223,7 @@ const Order = () => {
             )}
           </div>
           <div className="border-t border-gray-200 dark:border-gray-700" />
-          <div className="p-6 flex justify-between items-center">
+          <div className="p-6 flex justify-between items-center flex-wrap">
             <h2>Update Order Status</h2>
             <form onSubmit={(e) => handlestatus(e, orderData._id)}>
               <select
@@ -225,10 +236,26 @@ const Order = () => {
                 value={status}
               >
                 <option value="Confirmed">Confirmed</option>
-                <option value="shipped">Shipped</option>
+                <option value="Shipped">Shipped</option>
                 <option value="Delivered">Delivered</option>
               </select>
-              <button type="submit">Update</button>
+              <button
+                type="submit"
+                className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+              >
+                Update
+              </button>
+              {status === "Shipped" && (
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    placeholder="Tracking Number"
+                    value={trackingNumber}
+                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
+              )}
             </form>
           </div>
         </div>

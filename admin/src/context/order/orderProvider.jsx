@@ -10,6 +10,22 @@ const OrderProvider = ({ children }) => {
     switch (action.type) {
       case "GetOrders":
         return { ...state, orders: action.payload };
+      case "UpdateOrderStatus":
+        return {
+          ...state,
+          orders: state.orders.map((order) => {
+            if (order._id === action.payload._id) {
+              return {
+                ...order,
+                status: action.payload.status,
+                tracking_number:
+                  action.payload.tracking_number ?? order.tracking_number,
+              };
+            }
+            return order;
+          }),
+        };
+
       default:
         return state;
     }

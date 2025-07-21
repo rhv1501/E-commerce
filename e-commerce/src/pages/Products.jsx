@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import useProducts from "../Hooks/useProducts";
 import { ProductContext } from "../context/ProductContext/ProductContext";
-import useGetuser from "../Hooks/useGetuser";
 import useAddTocart from "../Hooks/useAddTocart";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext/AuthContext";
@@ -10,7 +9,6 @@ import { AuthContext } from "../context/AuthContext/AuthContext";
 const Products = () => {
   const { islogged } = useContext(AuthContext);
   const { fetchProducts, loading, error } = useProducts();
-  const Getuser = useGetuser();
   const context = useContext(ProductContext);
   const { state } = context;
   const navigate = useNavigate();

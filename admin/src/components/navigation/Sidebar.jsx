@@ -30,7 +30,7 @@ const Sidebar = ({ on }) => {
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-3000 ease-in-out`}
           >
-            Products
+            <Link to="/products">Products</Link>
           </li>
           <li
             className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
