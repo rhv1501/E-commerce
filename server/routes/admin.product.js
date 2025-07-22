@@ -1,5 +1,5 @@
 import Router from "express";
-import upload from "../middlewares/multerupload.js";
+import upload from "../middlewares/upload.js";
 import {
   addproducts,
   deleteproduct,
@@ -10,13 +10,12 @@ import {
   updateproduct,
 } from "../controllers/adminproductcontroller.js";
 import verifyjwt from "../middlewares/verifyjwt.js";
-import preParseForm from "../middlewares/preparser.js";
 const router = Router();
 
 router.get("/orders", verifyjwt, orders);
 router.get("/order/:id", verifyjwt, order);
 router.get("/products", verifyjwt, products);
-router.post("/products", verifyjwt, preParseForm, upload, addproducts);
+router.post("/products", verifyjwt, upload, addproducts);
 router.delete("/products/:id", verifyjwt, deleteproduct);
 router.put("/products/:id", verifyjwt, updateproduct);
 

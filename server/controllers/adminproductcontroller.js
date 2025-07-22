@@ -48,27 +48,57 @@ export const products = async (req, res) => {
   }
 };
 export const addproducts = async (req, res) => {
-  const { name, description, price, category, stock } = req.body;
   try {
+    const { name, description, price, category, stock, brand } = req.body;
     const user_id = req.user;
-    console.log(user_id);
+
+    console.log("User ID:", user_id);
+    console.log("Request body:", req.body);
+    console.log("Uploaded images:", req.images);
+
     if (!user_id) {
-      res.status(404).json({ message: "user un-authorized" });
-      return;
+      return res.status(401).json({ message: "User unauthorized" });
     }
+
+    // Validate required fields
+    if (!name || !price || !category) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, price, and category are required",
+      });
+    }
+
+    // Check if images were uploaded
+    if (!req.images || req.images.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image is required",
+      });
+    }
+
     const product = new ProductModel({
-      name,
-      description,
-      price,
+      name: name.trim(),
+      description: description?.trim() || "",
+      price: parseFloat(price),
       imageuri: req.images,
-      category,
-      stock,
+      category: category.trim(),
+      stock: parseInt(stock) || 0,
     });
-    product.save();
-    res.status(200).json({ message: "product added successfully", product });
+
+    const savedProduct = await product.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Product added successfully",
+      product: savedProduct,
+    });
   } catch (e) {
-    console.log(e);
-    res.status(500).json({ messaage: "Internal server error", error: e });
+    console.error("Add product error:", e);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: e.message,
+    });
   }
 };
 

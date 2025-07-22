@@ -18,10 +18,10 @@ const corsOption = {
   methods: ["GET", "PUT", "POST", "DELETE"],
   credentials: true,
 };
+// Removed express-fileupload and urlencoded middleware that interfere with busboy
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(path.resolve(), "public")));
 app.use(morgan("dev"));
 const __dirname = path.resolve();

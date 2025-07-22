@@ -7,8 +7,10 @@ const Dashboard = () => {
   const { orders } = useOrders();
 
   useEffect(() => {
-    getOrders();
-  }, [getOrders]);
+    if (!orders || orders.length === 0) {
+      getOrders();
+    }
+  }, [getOrders, orders]);
 
   const dashboardStats = useMemo(() => {
     if (!orders || orders.length === 0) {
