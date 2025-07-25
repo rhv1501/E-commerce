@@ -43,9 +43,9 @@ body {
   a:hover {
     color: #747bff;
   }
-  button {
+  /* button {
     background-color: #f0f0f0;
-  }
+  } */
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -55,7 +55,7 @@ body {
   a:hover {
     color: #747bff;
   }
-  button {
+  /* button {
     background-color: #333333;
-  }
+  } */
 }
