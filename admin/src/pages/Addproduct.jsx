@@ -15,16 +15,25 @@ const Addproduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
 
-    const images = e.target.images.files;
-    if (images.length > 0) {
-      for (let i = 0; i < images.length; i++) {
-        formData.append("images", images[i]);
-      }
-    } else {
+    const formData = new FormData();
+
+    const form = e.target;
+    const images = form.images.files;
+
+    if (images.length === 0) {
       toast.error("Please upload at least one image.");
       return;
+    }
+
+    formData.append("name", form.name.value);
+    formData.append("description", form.description.value);
+    formData.append("price", form.price.value);
+    formData.append("category", form.category.value);
+    formData.append("stock", form.stock.value);
+
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
     }
 
     submitData(formData);

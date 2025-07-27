@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useSingleProduct from "../hooks/useSingleProduct";
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { toast } from "react-toastify";
+const UpdateModal = lazy(() => import("../components/UpdateModal"));
 
 const Product = () => {
   const { id } = useParams();
@@ -10,6 +11,10 @@ const Product = () => {
   const { product, loading, error, fetchSingleProduct } = useSingleProduct();
   const [selectedImage, setSelectedImage] = useState(null);
   const { deleteProduct } = useDeleteProduct();
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (id) {
@@ -99,227 +104,217 @@ const Product = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={() => navigate("/products")}
-            className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-          >
-            <span>←</span>
-            <span>Back to Products</span>
-          </button>
-          <div className="flex gap-2">
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors">
-              Edit Product
-            </button>
+    <>
+      {isModalOpen && <UpdateModal closeModal={closeModal} />}
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
             <button
-              onClick={handleDelete}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+              onClick={() => navigate("/products")}
+              className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
             >
-              Delete Product
+              <span>←</span>
+              <span>Back to Products</span>
             </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image Section */}
-          <div className="space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
-              <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                {selectedImage ? (
-                  <img
-                    src={selectedImage}
-                    alt={product.name || "Product"}
-                    className="w-full h-full object-contain rounded-lg"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.nextSibling.style.display = "flex";
-                    }}
-                  />
-                ) : null}
-                <div
-                  className="flex flex-col items-center justify-center text-gray-400"
-                  style={{ display: selectedImage ? "none" : "flex" }}
-                >
-                  <span className="text-4xl mb-2">📷</span>
-                  <span>No image available</span>
-                </div>
-              </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                Edit Product
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                Delete Product
+              </button>
             </div>
+          </div>
 
-            {/* Image Gallery */}
-            {product.imageuri && product.imageuri.length > 1 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Image Section */}
+            <div className="space-y-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Product Images ({product.imageuri.length})
-                </h3>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                  {product.imageuri.map((img, idx) =>
-                    img ? (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedImage(img)}
-                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                          selectedImage === img
-                            ? "border-blue-500 ring-2 ring-blue-200 dark:ring-blue-800"
-                            : "border-gray-200 dark:border-gray-600 hover:border-gray-400"
-                        }`}
-                      >
-                        <img
-                          src={img}
-                          alt={`${product.name} ${idx + 1}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.parentElement.style.display = "none";
-                          }}
-                        />
-                      </button>
-                    ) : null
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Product Details */}
-          <div className="space-y-6">
-            {/* Basic Info */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                {product.name || "Unnamed Product"}
-              </h1>
-
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Price
-                  </span>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    ₹{product.price?.toLocaleString("en-IN") || "0"}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Stock
-                  </span>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {product.stock || 0} units
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600 dark:text-gray-400">
-                    Category:
-                  </span>
-                  <span className="text-gray-900 dark:text-white">
-                    {product.category || "N/A"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600 dark:text-gray-400">
-                    Brand:
-                  </span>
-                  <span className="text-gray-900 dark:text-white">
-                    {product.brand || "N/A"}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-gray-600 dark:text-gray-400">
-                    Status:
-                  </span>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      product.stock > 0
-                        ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
-                        : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
-                    }`}
+                <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                  {selectedImage ? (
+                    <img
+                      src={selectedImage}
+                      alt={product.name || "Product"}
+                      className="w-full h-full object-contain rounded-lg"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.nextSibling.style.display = "flex";
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="flex flex-col items-center justify-center text-gray-400"
+                    style={{ display: selectedImage ? "none" : "flex" }}
                   >
-                    {product.stock > 0 ? "✓ In Stock" : "✗ Out of Stock"}
-                  </span>
+                    <span className="text-4xl mb-2">📷</span>
+                    <span>No image available</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Image Gallery */}
+              {product.imageuri && product.imageuri.length > 1 && (
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                    Product Images ({product.imageuri.length})
+                  </h3>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                    {product.imageuri.map((img, idx) =>
+                      img ? (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedImage(img)}
+                          className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                            selectedImage === img
+                              ? "border-blue-500 ring-2 ring-blue-200 dark:ring-blue-800"
+                              : "border-gray-200 dark:border-gray-600 hover:border-gray-400"
+                          }`}
+                        >
+                          <img
+                            src={img}
+                            alt={`${product.name} ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.parentElement.style.display = "none";
+                            }}
+                          />
+                        </button>
+                      ) : null
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Description */}
-            {product.description && (
+            {/* Product Details */}
+            <div className="space-y-6">
+              {/* Basic Info */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                  Description
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  {product.name || "Unnamed Product"}
+                </h1>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Price
+                    </span>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      ₹{product.price?.toLocaleString("en-IN") || "0"}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Stock
+                    </span>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {product.stock || 0} units
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-gray-600 dark:text-gray-400">
+                      Category:
+                    </span>
+                    <span className="text-gray-900 dark:text-white">
+                      {product.category || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-gray-600 dark:text-gray-400">
+                      Status:
+                    </span>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        product.stock > 0
+                          ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+                          : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
+                      }`}
+                    >
+                      {product.stock > 0 ? "✓ In Stock" : "✗ Out of Stock"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              {product.description && (
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                    Description
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Admin Actions */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Admin Actions
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-            )}
-
-            {/* Admin Actions */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Admin Actions
-              </h3>
-              <div className="space-y-3">
-                <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
-                  Edit Product Details
-                </button>
-                <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
-                  Update Stock
-                </button>
-                <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
-                  Manage Images
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors font-medium"
-                >
-                  Delete Product
-                </button>
-              </div>
-            </div>
-
-            {/* Product Stats */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Product Statistics
-              </h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Product ID:
-                  </span>
-                  <span className="text-gray-900 dark:text-white font-mono">
-                    {product._id?.slice(-8) || "N/A"}
-                  </span>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-colors font-medium"
+                  >
+                    Edit Product Details
+                  </button>
+                  <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
+                    Update Stock
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors font-medium"
+                  >
+                    Delete Product
+                  </button>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Created:
-                  </span>
-                  <span className="text-gray-900 dark:text-white">
-                    {product.createdAt
-                      ? new Date(product.createdAt).toLocaleDateString("en-IN")
-                      : "N/A"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Last Updated:
-                  </span>
-                  <span className="text-gray-900 dark:text-white">
-                    {product.updatedAt
-                      ? new Date(product.updatedAt).toLocaleDateString("en-IN")
-                      : "N/A"}
-                  </span>
+              </div>
+
+              {/* Product Stats */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Product Statistics
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Product ID:
+                    </span>
+                    <span className="text-gray-900 dark:text-white font-mono">
+                      {product._id?.slice(-8) || "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Created:
+                    </span>
+                    <span className="text-gray-900 dark:text-white">
+                      {product.createdAt
+                        ? new Date(product.createdAt).toLocaleDateString(
+                            "en-IN"
+                          )
+                        : "N/A"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
