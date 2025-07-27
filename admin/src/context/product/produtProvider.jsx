@@ -10,6 +10,13 @@ const ProductProvider = ({ children }) => {
     switch (action.type) {
       case "GetProducts":
         return { ...state, products: action.payload, loading: false };
+      case "deleteProduct":
+        return {
+          ...state,
+          products: state.products.filter(
+            (product) => product._id !== action.payload
+          ),
+        };
       default:
         return state;
     }

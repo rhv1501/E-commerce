@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useSingleProduct from "../hooks/useSingleProduct";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { product, loading, error, fetchSingleProduct } = useSingleProduct();
   const [selectedImage, setSelectedImage] = useState(null);
+  const { deleteProduct } = useDeleteProduct();
 
   useEffect(() => {
     if (id) {
       fetchSingleProduct(id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -19,6 +23,17 @@ const Product = () => {
       setSelectedImage(product.imageuri[0]);
     }
   }, [product]);
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        await deleteProduct(id);
+        navigate("/products");
+      } catch (error) {
+        toast.error(error.message || "Failed to delete product");
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -99,7 +114,10 @@ const Product = () => {
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors">
               Edit Product
             </button>
-            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
               Delete Product
             </button>
           </div>
@@ -253,7 +271,10 @@ const Product = () => {
                 <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
                   Manage Images
                 </button>
-                <button className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
+                <button
+                  onClick={handleDelete}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors font-medium"
+                >
                   Delete Product
                 </button>
               </div>

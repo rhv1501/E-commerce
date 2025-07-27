@@ -1,5 +1,6 @@
 import Order from "../models/order.model.js";
 import ProductModel from "../models/product.model.js";
+import { storage } from "../utils/appwriteclient.js";
 export const orders = async (req, res) => {
   try {
     const user_id = req.user;
@@ -104,12 +105,73 @@ export const addproducts = async (req, res) => {
 
 export const deleteproduct = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const product = await ProductModel.findByIdAndDelete(id);
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is required",
+      });
+    }
+
+    // Find the product first to get image URLs
+    const product = await ProductModel.findById(id);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    if (product.imageuri && product.imageuri.length > 0) {
+      console.log(
+        `Deleting ${product.imageuri.length} images from Appwrite...`
+      );
+
+      for (const imageUrl of product.imageuri) {
+        try {
+          const fileId = extractFileIdFromUrl(imageUrl);
+
+          if (fileId) {
+            await storage.deleteFile(process.env.APPWRITE_BUCKET_ID, fileId);
+            console.log(`✅ Deleted image: ${fileId}`);
+          }
+        } catch (deleteError) {
+          console.error(
+            `❌ Failed to delete image ${imageUrl}:`,
+            deleteError.message
+          );
+        }
+      }
+    }
+
+    await ProductModel.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Product and associated images deleted successfully",
+    });
   } catch (e) {
-    res.status(500).json({ message: "internal server error" });
+    console.error("Delete product error:", e);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: e.message,
+    });
   }
 };
+
+const extractFileIdFromUrl = (url) => {
+  try {
+    const matches = url.match(/\/files\/([^\/\?]+)/);
+    return matches ? matches[1] : null;
+  } catch (error) {
+    console.error("Error extracting file ID from URL:", url, error);
+    return null;
+  }
+};
+
 export const updateproduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -130,7 +192,7 @@ export const updateproduct = async (req, res) => {
     if (stock) {
       updatedproduct.stock = stock;
     }
-    const product = await ProductModel.findOne({ _id: id });
+    let product = await ProductModel.findOne({ _id: id });
     if (!product) {
       res.status(403).json({ message: "product not found" });
     }
