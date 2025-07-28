@@ -17,6 +17,15 @@ const ProductProvider = ({ children }) => {
             (product) => product._id !== action.payload
           ),
         };
+      case "addProduct":
+        return { ...state, products: [...state.products, action.payload] };
+      case "updateProduct":
+        return {
+          ...state,
+          products: state.products.map((product) =>
+            product._id === action.payload._id ? action.payload.update : product
+          ),
+        };
       default:
         return state;
     }

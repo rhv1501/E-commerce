@@ -11,9 +11,10 @@ const Product = () => {
   const { product, loading, error, fetchSingleProduct } = useSingleProduct();
   const [selectedImage, setSelectedImage] = useState(null);
   const { deleteProduct } = useDeleteProduct();
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);
+    fetchSingleProduct(id);
   };
 
   useEffect(() => {
@@ -105,7 +106,17 @@ const Product = () => {
 
   return (
     <>
-      {isModalOpen && <UpdateModal closeModal={closeModal} />}
+      {isModalOpen && (
+        <UpdateModal
+          closeModal={closeModal}
+          name={product.name}
+          description={product.description}
+          price={product.price}
+          category={product.category}
+          stock={product.stock}
+          id={product._id}
+        />
+      )}
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
         <div className="max-w-6xl mx-auto px-4 py-8">
           {/* Header */}
