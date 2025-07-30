@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { lazy, useEffect, useMemo } from "react";
 import { useOrders } from "../context/order/useOrder";
 import { useGetOrders } from "../hooks/useGetorders";
-import CountUp from "react-countup";
+const CountUp = lazy(() => import("react-countup"));
 const Dashboard = () => {
   const { getOrders, loading, error } = useGetOrders();
   const { orders } = useOrders();

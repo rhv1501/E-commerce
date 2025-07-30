@@ -1,5 +1,22 @@
 import { Link } from "react-router-dom";
+import useLogout from "../../hooks/useLogout";
+import { useEffect } from "react";
+import { useState } from "react";
 const Sidebar = ({ on }) => {
+  const [isLogged, setIsLogged] = useState(false);
+  const { logout } = useLogout();
+  const handleLogout = () => {
+    logout();
+    setIsLogged(false);
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, []);
   return (
     <div
       className={`h-full md:w-[20%] w-[50%] bg-gradient-to-tr from-purple-800 via-indigo-600 to-blue-400 fixed ${
@@ -32,27 +49,17 @@ const Sidebar = ({ on }) => {
           >
             <Link to="/products">Products</Link>
           </li>
-          <li
-            className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
-              on ? "left-0" : "left-[-100%]"
-            } transition-all duration-4000 ease-in-out`}
-          >
-            Customers
-          </li>
-          <li
-            className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
-              on ? "left-0" : "left-[-100%]"
-            } transition-all duration-5000`}
-          >
-            Reports
-          </li>
         </ul>
-        <div className="flex-grow"></div>
-        <div className="p-4">
-          <button className="w-full p-2 rounded hover:bg-red-700 bg-gray-700">
-            Logout
-          </button>
-        </div>
+        {isLogged && (
+          <div className="p-4">
+            <button
+              onClick={handleLogout}
+              className="w-full p-2 rounded-lg hover:bg-red-700 bg-red-600 text-white transition-colors duration-300 dark:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </div>
       <div className="absolute bottom-0 left-0 w-full bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 text-white p-2 text-center">
         &copy; {new Date(Date.now()).getFullYear()} PKG IT Admin

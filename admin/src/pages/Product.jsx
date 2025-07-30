@@ -281,9 +281,6 @@ const Product = () => {
                   >
                     Edit Product Details
                   </button>
-                  <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg transition-colors font-medium">
-                    Update Stock
-                  </button>
                   <button
                     onClick={handleDelete}
                     className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg transition-colors font-medium"

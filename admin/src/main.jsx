@@ -6,7 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 import OrderProvider from "./context/order/orderProvider.jsx";
 import ProductProvider from "./context/product/produtProvider.jsx";
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <ProductProvider>
       <OrderProvider>
         <BrowserRouter>
@@ -14,5 +13,4 @@ createRoot(document.getElementById("root")).render(
         </BrowserRouter>
       </OrderProvider>
     </ProductProvider>
-  </StrictMode>
 );
