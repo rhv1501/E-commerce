@@ -81,7 +81,7 @@ const ServerErrorPage = () => {
           {/* Action button */}
           <div className="flex justify-center">
             <button
-              onClick={() => window.location.replace("/")}
+              onClick={() => window.location.replace("/admin")}
               className="
                 w-full sm:w-auto px-8 py-3 rounded-lg font-semibold
                 bg-gradient-to-r from-indigo-500 to-purple-600 

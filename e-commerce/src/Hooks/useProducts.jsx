@@ -11,7 +11,7 @@ const useProducts = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:5050/api/products", {
+      const response = await fetch("/api/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

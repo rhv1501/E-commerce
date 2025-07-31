@@ -9,11 +9,11 @@ const useGetorder = () => {
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:5050/admin/order/${orderid}`, {
+      const res = await fetch(`/api/admin/order/${orderid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("admin-token"),
         },
       });
 

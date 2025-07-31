@@ -3,7 +3,7 @@ const Verifyforgotpassword = async (otpCode, email) => {
     console.log(email, otpCode);
     try {
       const response = await fetch(
-        "http://localhost:5050/api/auth/forgotpasssword/otp/verify",
+        "/api/auth/forgotpasssword/otp/verify",
         {
           method: "POST",
           headers: {

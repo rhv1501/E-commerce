@@ -10,7 +10,7 @@ const Sidebar = ({ on }) => {
     setIsLogged(false);
   };
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admin-token");
     if (token) {
       setIsLogged(true);
     } else {
@@ -33,21 +33,21 @@ const Sidebar = ({ on }) => {
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-1000 ease-in-out`}
           >
-            <Link to="/">Dashboard</Link>
+            <Link to="/admin">Dashboard</Link>
           </li>
           <li
             className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-2000 ease-in-out`}
           >
-            <Link to={"/Orders"}>Orders</Link>
+            <Link to={"/admin/Orders"}>Orders</Link>
           </li>
           <li
             className={`text-white hover:bg-gradient-to-r from-fuchsia-500 via-purple-500 to-violet-600 p-2 rounded relative ${
               on ? "left-0" : "left-[-100%]"
             } transition-all duration-3000 ease-in-out`}
           >
-            <Link to="/products">Products</Link>
+            <Link to="/admin/products">Products</Link>
           </li>
         </ul>
         {isLogged && (

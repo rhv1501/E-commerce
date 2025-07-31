@@ -2,7 +2,7 @@ const verifyotp = async (otpCode) => {
   const token = localStorage.getItem("token");
   if (token) {
     try {
-      const response = await fetch("http://localhost:5050/api/auth/verify", {
+      const response = await fetch("/api/auth/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

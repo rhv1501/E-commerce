@@ -64,7 +64,7 @@ const Order = () => {
           <p className="text-red-600 mb-4">{error}</p>
           <div className="flex space-x-2">
             <button
-              onClick={() => navigate("/orders")}
+              onClick={() => navigate("/admin/orders")}
               className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-4 rounded-lg transition-colors"
             >
               Back to Orders
@@ -93,7 +93,7 @@ const Order = () => {
             The order with ID "{id}" could not be found.
           </p>
           <button
-            onClick={() => navigate("/orders")}
+            onClick={() => navigate("/amdin/orders")}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
           >
             Back to Orders
@@ -108,7 +108,7 @@ const Order = () => {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <button
-            onClick={() => navigate("/orders")}
+            onClick={() => navigate("/admin/orders")}
             className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 mb-4 p-2 rounded-lg transition-colors"
           >
             <span>←</span>
@@ -211,10 +211,6 @@ const Order = () => {
                       <p className="font-medium text-gray-900 dark:text-white">
                         ₹{(item.product_id?.price || 0).toLocaleString("en-IN")}{" "}
                         X {item.quantity} = {item?.value}
-                      </p>
-
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        available stock - {item.product_id.stock || "No stock"}
                       </p>
                     </div>
                   ))}

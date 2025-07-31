@@ -25,7 +25,7 @@ const App = () => {
     const check = async () => {
       const health = await healthCheck();
       if (!health) {
-        navigate("/serverdown");
+        navigate("/admin/serverdown");
         return;
       }
     };
@@ -42,15 +42,15 @@ const App = () => {
         <Navbar />
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/admin/auth" element={<Auth />} />
             <Route element={<PrivateRoute />}>
-              <Route path="/serverdown" element={<ServerErrorPage />} />
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/order/:id" element={<Order />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/addproduct" element={<Addproduct />} />
+              <Route path="/admin/serverdown" element={<ServerErrorPage />} />
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/orders" element={<Orders />} />
+              <Route path="/admin/order/:id" element={<Order />} />
+              <Route path="/admin/products" element={<Products />} />
+              <Route path="/admin/product/:id" element={<Product />} />
+              <Route path="/admin/addproduct" element={<Addproduct />} />
             </Route>
           </Routes>
         </Suspense>

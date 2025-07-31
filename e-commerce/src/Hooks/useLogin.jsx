@@ -5,7 +5,7 @@ const useLogin = () => {
   const { setislogged } = useContext(AuthContext);
   const login = async (email, password) => {
     try {
-      const response = await fetch("http://localhost:5050/api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

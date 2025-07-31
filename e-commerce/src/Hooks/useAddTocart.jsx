@@ -7,7 +7,7 @@ const useAddTocart = () => {
   const addtocart = useCallback(
     async (product_id, quantity) => {
       const res = await fetch(
-        `http://localhost:5050/api/products/addToCart/${product_id}`,
+        `/api/products/addToCart/${product_id}`,
         {
           method: "POST",
           headers: {

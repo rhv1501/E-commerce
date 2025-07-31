@@ -5,11 +5,11 @@ const useUpdatestatus = () => {
   const { dispatch } = useOrders();
   const updatestatus = async (id, tracking_number, status) => {
     try {
-      const res = await fetch(`http://localhost:5050/admin/order/${id}`, {
+      const res = await fetch(`/api/admin/order/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("admin-token"),
         },
         body: JSON.stringify({ status, tracking_number }),
       });

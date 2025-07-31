@@ -6,7 +6,7 @@ const useLogin = () => {
     let toastId;
     try {
       toastId = toast.loading("Logging in...");
-      const response = await fetch("http://localhost:5050/admin/auth/login", {
+      const response = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -17,9 +17,9 @@ const useLogin = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("admin-token", data.token);
         toast.dismiss(toastId);
-        navigate("/");
+        navigate("/admin");
       } else {
         toast.dismiss(toastId);
         toast.error(data.message || "Login failed");

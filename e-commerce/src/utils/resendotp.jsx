@@ -2,7 +2,7 @@ const resendotp = async () => {
   const token = localStorage.getItem("token");
   if (token) {
     try {
-      const res = await fetch("http://localhost:5050/api/auth/sendotp", {
+      const res = await fetch("/api/auth/sendotp", {
         method: "post",
         headers: {
           token,

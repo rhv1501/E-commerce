@@ -1,7 +1,7 @@
 const useLogout = () => {
   const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/auth";
+    localStorage.removeItem("admin-token");
+    window.location.href = "/admin/auth";
   };
   return { logout };
 };

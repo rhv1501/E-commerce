@@ -10,7 +10,7 @@ export function useOrder() {
 
     try {
       const response = await fetch(
-        "http://localhost:5050/api/order",
+        "/api/order",
         {
           method: "POST",
           headers: {

@@ -18,7 +18,7 @@ const useRemovefromCart = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5050/api/products/removeFromCart/${cartItemId}`,
+          `/api/products/removeFromCart/${cartItemId}`,
           {
             method: "DELETE",
             headers: {

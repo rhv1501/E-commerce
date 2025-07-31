@@ -9,11 +9,11 @@ export const useDeleteProduct = () => {
     try {
       toastId = toast.loading("Deleting product...");
       const response = await fetch(
-        `http://localhost:5050/admin/products/${productId}`,
+        `/api/admin/products/${productId}`,
         {
           method: "DELETE",
           headers: {
-            token: localStorage.getItem("token"),
+            token: localStorage.getItem("admin-token"),
           },
         }
       );

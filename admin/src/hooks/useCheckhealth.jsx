@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 const useCheckhealth = () => {
   const healthCheck = async () => {
     try {
-      const response = await fetch("http://localhost:5050", {
+      const response = await fetch("/health", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

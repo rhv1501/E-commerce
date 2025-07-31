@@ -2,7 +2,7 @@
 const changepass = async (oldPassword, newPassword) => {
   try {
     const response = await fetch(
-      "http://localhost:5050/api/auth/resetpassword",
+      "/api/auth/resetpassword",
       {
         method: "POST",
         headers: {

@@ -12,11 +12,11 @@ export const useGetOrders = () => {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:5050/admin/orders", {
+      const res = await fetch("/api/admin/orders", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("admin-token"),
         },
       });
 

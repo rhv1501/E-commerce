@@ -14,7 +14,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5050/api/order", {
+      const response = await fetch("api/order", {
         method: "GET",
         headers: {
           token,

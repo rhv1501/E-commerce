@@ -1,6 +1,6 @@
 const checkServerHealth = async () => {
   try {
-    const response = await fetch("http://localhost:5050/");
+    const response = await fetch("/health");
     if (response.ok) {
       return true;
     } else {

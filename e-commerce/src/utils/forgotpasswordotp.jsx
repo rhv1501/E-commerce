@@ -1,6 +1,6 @@
 const forgotpasswordotp = async (email) => {
   try {
-    const res = await fetch("http://localhost:5050/api/auth/forgotpassword", {
+    const res = await fetch("/api/auth/forgotpassword", {
       method: "POST",
       headers:{
         "Content-Type": "application/json",

@@ -34,7 +34,7 @@ const Product = () => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await deleteProduct(id);
-        navigate("/products");
+        navigate("/admin/products");
       } catch (error) {
         toast.error(error.message || "Failed to delete product");
       }
@@ -65,7 +65,7 @@ const Product = () => {
           <p className="text-red-600 mb-6">{error}</p>
           <div className="flex flex-col sm:flex-row gap-2">
             <button
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/admin/products")}
               className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
             >
               Back to Products
@@ -94,7 +94,7 @@ const Product = () => {
             The product you're looking for doesn't exist.
           </p>
           <button
-            onClick={() => navigate("/products")}
+            onClick={() => navigate("/admin/products")}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
           >
             Back to Products
@@ -122,7 +122,7 @@ const Product = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <button
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/admin/products")}
               className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
             >
               <span>←</span>

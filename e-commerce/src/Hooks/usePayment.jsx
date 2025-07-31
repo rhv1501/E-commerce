@@ -7,7 +7,7 @@ export const usePayment = () => {
   ) => {
     try {
       const response = await fetch(
-        "http://localhost:5050/api/payments/verifypayment",
+        "/api/payments/verifypayment",
         {
           method: "POST",
           headers: {

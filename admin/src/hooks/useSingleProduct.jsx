@@ -9,7 +9,7 @@ const useSingleProduct = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://localhost:5050/api/products/${id}`);
+      const res = await fetch(`/api/products/${id}`);
       if (!res.ok) {
         throw new Error("Failed to fetch product");
       }

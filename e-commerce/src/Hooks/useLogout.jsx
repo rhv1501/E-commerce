@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext/AuthContext";
 const useLogout = () => {
   const { setislogged } = useContext(AuthContext);
   const logout = async () => {
-    const response = await fetch("http://localhost:5050/api/auth/logout", {
+    const response = await fetch("/api/auth/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

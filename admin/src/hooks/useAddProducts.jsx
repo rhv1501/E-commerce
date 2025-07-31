@@ -1,15 +1,16 @@
 import { toast } from "react-toastify";
-
+import { useProduct } from "../context/product/useProduct";
 export const useAddProducts = () => {
+  const { dispatch } = useProduct();
   let toastId;
   const submitData = async (formData) => {
     try {
       toastId = toast.loading("Adding product...");
-      const res = await fetch("http://localhost:5050/admin/products", {
+      const res = await fetch("/api/admin/products", {
         method: "POST",
         body: formData,
         headers: {
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("admin-token"),
         },
       });
 
@@ -20,7 +21,7 @@ export const useAddProducts = () => {
         toast.error(data.message || "Failed to add product");
         return;
       }
-
+      dispatch({ type: "ADD_PRODUCT", payload: data.product });
       toast.success("Product added successfully!");
       return data;
     } catch (error) {

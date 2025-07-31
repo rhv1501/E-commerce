@@ -7,7 +7,7 @@ const PrivateRoute = () => {
   const [hasShownToast, setHasShownToast] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admin-token");
 
     if (token) {
       setIsLogged(true);
@@ -32,7 +32,7 @@ const PrivateRoute = () => {
     );
   }
 
-  return isLogged ? <Outlet /> : <Navigate to="/auth" replace />;
+  return isLogged ? <Outlet /> : <Navigate to="/admin/auth" replace />;
 };
 
 export default PrivateRoute;

@@ -1,0 +1,14 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "this is a ecommerce app builkt with mern stack ",
+  "license": "ISC",
+  "author": "Rudresh_H_Vyas",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "install": "npm install --prefix admin && npm install --prefix e-commerce && npm install --prefix server",
+    "build": "npm run install && npm run build --prefix admin && npm run build --prefix e-commerce",
+    "start": "npm run server --prefix server"
+  }
+}

@@ -28,20 +28,22 @@ const __dirname = path.resolve();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
-app.use("/admin/auth", adminAuth);
-app.use("/admin", adminProduct);
+app.use("/api/admin/auth", adminAuth);
+app.use("/api/admin", adminProduct);
 app.use("/api/order", orderRoutes);
 app.use("/api/payments", paymentRoute);
-app.get("/public/uploads/:productname/:imagename", (req, res) => {
-  res.sendFile(
-    path.join(
-      __dirname,
-      `public/uploads/${req.params.productname}/${req.params.imagename}`
-    )
-  );
-});
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.json({ message: "Server is running" });
+});
+
+app.use("/admin", express.static(path.join(__dirname, "../admin/dist")));
+app.use("/", express.static(path.join(__dirname, "../e-commerce/dist")));
+
+app.get("/admin/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../admin/dist/index.html"));
+});
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../e-commerce/dist/index.html"));
 });
 
 app.listen(5050, () => {

@@ -5,7 +5,7 @@ const useGetuser = () => {
   const context = useContext(UserContext);
   const { dispatch } = context;
   const user = useCallback(async () => {
-    const response = await fetch("http://localhost:5050/api/auth/user", {
+    const response = await fetch("/api/auth/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

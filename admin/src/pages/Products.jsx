@@ -22,7 +22,7 @@ const Products = () => {
       </div>
       <div className="flex justify-center items-center">
         <Link
-          to={"/addproduct"}
+          to={"/admin/addproduct"}
           className="p-4 bg-indigo-700 dark:bg-indigo-600 rounded-lg mt-4 hover:bg-indigo-950 text-white font-semibold transition-colors duration-300"
         >
           Add Product
@@ -39,7 +39,7 @@ const Products = () => {
               >
                 <Link
                   className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
-                  to={`/product/${product._id}`}
+                  to={`/admin/product/${product._id}`}
                 >
                   <img
                     className="object-cover"
@@ -49,7 +49,7 @@ const Products = () => {
                   />
                 </Link>
                 <div className="mt-4 px-5 pb-5">
-                  <Link to={`/product/${product._id}`}>
+                  <Link to={`/admin/product/${product._id}`}>
                     <h5 className="text-xl tracking-tight">{product.name}</h5>
                   </Link>
                   <div className="mt-2 mb-5 flex items-center justify-between">

@@ -15,11 +15,11 @@ const useUpdateProduct = () => {
   ) => {
     Toastid = toast.loading("Updating Product...");
     try {
-      const res = await fetch(`http://localhost:5050/admin/products/${id}`, {
+      const res = await fetch(`/api/admin/products/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("admin-token"),
         },
         body: JSON.stringify({
           name,
