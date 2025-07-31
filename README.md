@@ -347,7 +347,6 @@ PORT=5050
 - [ ] **Advanced Analytics** - Sales reports and customer insights
 - [ ] **Email Notifications** - Order confirmations and updates
 - [ ] **Search Enhancement** - Elasticsearch integration
-- [ ] **Payment Gateway** - Stripe/PayPal integration
 - [ ] **Real-time Chat** - Customer support system
 - [ ] **Mobile App** - React Native implementation
 - [ ] **Multi-vendor Support** - Marketplace functionality
