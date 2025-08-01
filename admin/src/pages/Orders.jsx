@@ -21,7 +21,8 @@ const Orders = () => {
     if (!orders || orders.length === 0) {
       getOrders();
     }
-  }, [orders, getOrders]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading && (!orders || orders.length === 0)) {
     return <Loading />;

@@ -71,7 +71,7 @@ const Addproduct = () => {
             className="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-5 hover:bg-gray-100 transition gap-2"
           >
             <img
-              src={preview || "../assets/upload_area.png"}
+              src={preview || "./upload_area.png"}
               alt="Upload Preview"
               className="w-full max-w-md h-auto object-contain border rounded"
             />

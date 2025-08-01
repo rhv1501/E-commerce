@@ -20,8 +20,9 @@ const verifyjwt = async (req, res, next) => {
       return;
     }
     const result = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded JWT:", result);
     req.user = result;
-    console.log(result);
+
     next();
   } catch (error) {
     res

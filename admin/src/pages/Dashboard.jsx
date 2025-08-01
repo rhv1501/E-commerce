@@ -10,7 +10,8 @@ const Dashboard = () => {
     if (!orders || orders.length === 0) {
       getOrders();
     }
-  }, [getOrders, orders]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const dashboardStats = useMemo(() => {
     if (!orders || orders.length === 0) {

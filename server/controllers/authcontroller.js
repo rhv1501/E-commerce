@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
       profilePicture,
     });
     const user = await newUser.save();
-    const token = jwt.sign({ User_id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ user_id: user._id }, process.env.JWT_SECRET);
     // res.cookie("token", token, {
     //   httpOnly: true,
     //   sameSite: "None",
@@ -54,7 +54,6 @@ export const signup = async (req, res) => {
 };
 export const Sendotp = async (req, res) => {
   const _id = req.user.user_id;
-  // console.log("from otp", _id);
   const user = await Usermodel.findOne({ _id });
   if (!user) {
     res.status(400).json({ message: "User not found" });
