@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext/UserContext";
 
-export function ForgotPassword() {
+const ForgotPassword = () => {
   const { dispatch } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -24,19 +24,16 @@ export function ForgotPassword() {
     setMessage("verifying....");
     if (pass) {
       try {
-        const res = await fetch(
-          "http://localhost:5050/api/auth/forgotpassword/change",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              newPassword: pass,
-              email: localStorage.getItem("email"),
-            }),
-          }
-        );
+        const res = await fetch("/api/auth/forgotpassword/change", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            newPassword: pass,
+            email: localStorage.getItem("email"),
+          }),
+        });
         const data = await res.json();
         if (res.ok) {
           setPassword("");
@@ -137,4 +134,6 @@ export function ForgotPassword() {
       </div>
     </>
   );
-}
+};
+
+export default ForgotPassword;
