@@ -25,7 +25,11 @@ const addToCart = async (req, res) => {
     const { id } = req.params;
     const { quantity } = req.body;
     const product = await ProductModel.findById({ _id: id });
-    const verifiedUser = req.verifieduser;
+    const _id = req.user.user_id;
+    const verifiedUser = await Usermodel.findById(_id);
+    if (!verifiedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
     console.log(req.verifieduser);
     const value = quantity * product.price;
     const result = verifiedUser.cart.push({
@@ -54,7 +58,11 @@ const addToCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const { id } = req.params; // cart item's _id
-    const verifiedUser = req.verifieduser;
+    const _id = req.user.user_id;
+    const verifiedUser = await Usermodel.findById(_id);
+    if (!verifiedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     if (verifiedUser.cart.length === 0) {
       return res.status(404).json("Cart is empty");
@@ -70,14 +78,12 @@ const removeFromCart = async (req, res) => {
 
     const item = verifiedUser.cart[cartItemIndex];
 
-    
     verifiedUser.totalPrice -= item.value;
     verifiedUser.cartCount -= 1;
 
     if (verifiedUser.cartCount < 0) verifiedUser.cartCount = 0;
     if (verifiedUser.totalPrice < 0) verifiedUser.totalPrice = 0;
 
-    
     verifiedUser.cart.pull({ _id: id });
 
     await verifiedUser.save();
@@ -90,7 +96,11 @@ const removeFromCart = async (req, res) => {
 
 const getCart = async (req, res) => {
   try {
-    const verifiedUser = req.verifiedUser;
+    const _id = req.user.user_id;
+    const verifiedUser = await Usermodel.findById(_id);
+    if (!verifiedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
     res.json({ cart: verifiedUser.cart, totalPrice: verifiedUser.totalPrice });
   } catch (err) {
     res.status(500).json("Internal server error " + err);
